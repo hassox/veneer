@@ -11,7 +11,6 @@ begin
     gem.homepage = "http://github.com/hassox/veneer"
     gem.authors = ["Daniel Neighman"]
     gem.rubyforge_project = "veneer"
-    gem.add_development_dependency "rspec"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::RubyforgeTasks.new do |rubyforge|

@@ -1,6 +1,35 @@
-= veneer
+.h1 veneer
 
-Description goes here.
+Veneer is an interface that sits above Data Sources.  
+It differs from ActiveModel in that it doesn't require errors or validations or anything like that.
+Veneer instead aims to provide a simple interface for
+ * querying
+ * creating 
+ * saving
+ * deleting
+
+This should be similar to the interface for DataMapper or ActiveRecord.
+
+.h2 Creating an instance
+
+To create an instance of an object wrap the class in a vaneer call and create or get a new instance.
+
+<pre><code>obj = Veneer(MyModel).new(:some => "attribute")
+obj.save
+
+ # OR
+
+obj = Veneer(MyModel).create(:some => "attribute")
+</code></pre>
+
+There are also version that will raise exceptions
+
+<pre><code>obj = Veneer(MyModel).new(:some => "attribute").save!
+
+# OR
+
+obj = Veneer(MyModel).create!(:some => "attribute")
+</create></pre>
 
 == Note on Patches/Pull Requests
  
