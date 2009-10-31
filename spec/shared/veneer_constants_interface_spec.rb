@@ -16,6 +16,9 @@ describe "it has the required Veneer constants", :shared => true do
     end.should_not raise_error(NameError)
   end
   
+  it "should inherit from Veneer::Base::ClassWrapper" do
+      @klass::VeneerInterface::ClassWrapper.ancestors.should include(::Veneer::Base::ClassWrapper)
+  end
 
   it "should create a VeneerInterface::ClassWrapper from the class" do
     Veneer(@klass).should be_an_instance_of(@klass::VeneerInterface::ClassWrapper)

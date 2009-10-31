@@ -20,21 +20,34 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
+#require 'spec/rake/spectask'
+#Spec::Rake::SpecTask.new(:spec) do |spec|
+#  spec.libs << 'lib' << 'spec'
+#  spec.spec_files = FileList['spec/**/*_spec.rb']
+#end
+#
+#Spec::Rake::SpecTask.new(:rcov) do |spec|
+#  spec.libs << 'lib' << 'spec'
+#  spec.pattern = 'spec/**/*_spec.rb'
+#  spec.rcov = true
+#end
+#
+#task :spec => :check_dependencies
+#
+#task :default => :spec
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
+task :default => [:test_units]
+require 'rake/testtask'
+desc "Run test suite."
+Rake::TestTask.new("test"){ |test|
+  test.pattern = "test/*_test.rb"
+  test.verbose = true
+  test.warning = true
+  test.libs << "test"
+  test.test_files = FileList["test/test*.rb", "test/**/*_test.rb"]
+}
 
-task :spec => :check_dependencies
-
-task :default => :spec
+task :test => :check_dependencies
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|

@@ -9,27 +9,13 @@ describe Veneer::Proxy do
         raise if opts[:invalid]
       end
 
-      class VeneerInterface
-        class ClassWrapper
-          def initialize(klass)
-          end
-
-          def create!(opts = {})
-            Veneer(Foo.new(opts))
-          rescue
-            raise Veneer::Errors::NotSaved
-          end
-          
-          def create(opts = {})
-            new(opts)
-          end
-
+      module VeneerInterface
+        class ClassWrapper < Veneer::Base::ClassWrapper
           def new(opts = {})
             Veneer(Foo.new(opts))
           rescue
             Veneer(Foo.new)
           end
-          
         end
 
         class InstanceWrapper
