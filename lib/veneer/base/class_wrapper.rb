@@ -6,21 +6,43 @@ module Veneer
         @klass, @opts = klass, opts
       end
 
+      # @api public
       def create!(opts = {})
-        instance = create_instance(opts)
+        instance = new(opts)
         instance.save!
         instance
       end
 
+      # @api public
       def create(opts = {})
-        instance = create_instance(opts)
+        instance = new(opts)
         instance.save
         instance
       end
 
-      def create_instance(opts = {})
+      # @api implementor
+      def new(opts = {})
         raise NotImplemented
       end
+
+      # @api public
+      def first(opts={})
+      end
+
+      # @api public
+      def all(opts={})
+      end
+
+      # @api implementor
+      def find_many
+        raise NotImplemented
+      end
+
+      # @api_implementor
+      def find_one
+        raise NotImplemented
+      end
+
     end
   end
 end

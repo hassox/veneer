@@ -7,16 +7,22 @@ class VeneerProxyTest < Test::Unit::TestCase
 
       class ::Foo
         def initialize(opts = {})
-          raise if opts[:invalid]
+          @opts = opts
         end
 
         def save
+          @opts[:invalid].nil?
+        end
+
+        def save!
+          raise Veneer::Errors::NotSaved if @opts[:invalid]
           true
         end
 
+
         module VeneerInterface
           class ClassWrapper < Veneer::Base::ClassWrapper
-            def create_instance(opts)
+            def new(opts)
               ::Kernel.Veneer(klass.new(opts))
             end
           end
@@ -24,10 +30,14 @@ class VeneerProxyTest < Test::Unit::TestCase
           class InstanceWrapper < Veneer::Base::InstanceWrapper
             def save!
               r = instance.save
+              raise Veneer::Errors::NotSaved unless r
+              r
             end
 
             def save
               instance.save
+            rescue
+              false
             end
           end
         end
@@ -48,7 +58,7 @@ class VeneerProxyTest < Test::Unit::TestCase
 
       veneer_should_have_the_required_veneer_constants
       veneer_should_implement_create_with_valid_attributes
-      #veneer_should_implement_create_with_invalid_attributes
+      veneer_should_implement_create_with_invalid_attributes
     end
   end
 
