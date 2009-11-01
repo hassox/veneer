@@ -8,7 +8,7 @@ module Veneer
     attr_reader :options
     def initialize(opts)
       @options = HashWithIndifferentAccess.new(opts || {})
-      odr = Array.new(@options.delete(:order) || [])
+      odr = Array.new([@options.delete(:order)].flatten.compact)
       @ordering = odr.nil? || odr.empty? ? [] : begin
         odr.map do |order|
           field, direction = order.split(" ")
@@ -46,6 +46,14 @@ module Veneer
       def initialize(field, direction = :desc)
         @field = field.to_sym
         @direction = direction.to_sym
+      end
+
+      def ascending?
+        direction == :asc
+      end
+
+      def decending?
+        !ascending?
       end
 
       def ==(other)

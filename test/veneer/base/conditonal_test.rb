@@ -114,8 +114,5 @@ class VeneerBaseConditionalTest < Test::Unit::TestCase
       end
     end
 
-
-
-
   end
 end
