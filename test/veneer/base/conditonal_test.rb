@@ -83,17 +83,17 @@ class VeneerBaseConditionalTest < Test::Unit::TestCase
           "bar not"    => 5,
           "baz gte"   => 6
         })
-        foo = c.conditions.detect{|c| c.field == :foo}
+        foo = c.conditions.detect{|x| x.field == :foo}
         assert_not_nil          foo
         assert_equal "bar",    foo.value
         assert_equal :not,     foo.operator
 
-        bar = c.conditions.detect{|c| c.field == :bar}
+        bar = c.conditions.detect{|x| x.field == :bar}
         assert_not_nil          bar
         assert_equal 5,         bar.value
         assert_equal :not,       bar.operator
 
-        baz = c.conditions.detect{|c| c.field == :baz}
+        baz = c.conditions.detect{|x| x.field == :baz}
         assert_not_nil          baz
         assert_equal  6,        baz.value
         assert_equal  :gte,     baz.operator

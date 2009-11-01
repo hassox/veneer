@@ -103,7 +103,7 @@ class VeneerProxyTest < Test::Unit::TestCase
       assert_equal Veneer::Proxy.ancestors[1], BasicObject
     end
 
-    context "constants" do
+    context "test implementation" do
       setup do
         @klass = ::Foo
         @valid_attributes   = {:name    => "foo"}

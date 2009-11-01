@@ -48,7 +48,7 @@ class Test::Unit::TestCase
       should "impelment offset" do
         total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
         result = Veneer(@klass).find_many(Veneer::Conditional.from_hash({:offset => 2}))
-        assert_equal (total.size - 2), result.size
+        assert_equal((total.size - 2), result.size)
       end
 
       context "conditions" do
@@ -67,7 +67,7 @@ class Test::Unit::TestCase
         should "implement :not conditions" do
           total =  Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
           result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"name not" => "bar"}))
-          assert_equal (total.size - 1), result.size
+          assert_equal((total.size - 1), result.size)
         end
 
         should "implement gt conditions" do
