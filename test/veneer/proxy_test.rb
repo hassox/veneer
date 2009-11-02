@@ -44,7 +44,7 @@ class VeneerProxyTest < Test::Unit::TestCase
             end
 
             def find_first(conditional)
-              ::Foo.collection.first
+              find_many(conditional).first
             end
 
             def find_many(conditional)
@@ -87,6 +87,7 @@ class VeneerProxyTest < Test::Unit::TestCase
               end
               result
             end
+
           end
 
           class InstanceWrapper < Veneer::Base::InstanceWrapper
@@ -123,6 +124,47 @@ class VeneerProxyTest < Test::Unit::TestCase
       veneer_should_implement_create_with_invalid_attributes
       veneer_should_impelement_destroy_all
       veneer_should_implement_find
+    end
+
+    context "all" do
+      setup do
+        ::Foo.collection.clear
+        (0..5).each do |i|
+          ::Foo.new(:name => "foo#{i}", :order_field1 => i)
+        end
+      end
+
+      teardown{ ::Foo.collection.clear }
+
+      should "get all the resources" do
+        assert_equal ::Foo.collection.size, Veneer(::Foo).all.size
+      end
+
+      should "get the resources with a condition" do
+        assert_equal 1, Veneer(::Foo).all(:conditions => {:name => "foo1"}).size
+      end
+
+      should "get the resources with offset, limit" do
+        result = Veneer(::Foo).all(:offset => 1, :limit => 3)
+        assert_equal 3, result.size
+      end
+    end
+
+    context "first" do
+      setup do
+        ::Foo.collection.clear
+        (0..5).each do |i|
+          ::Foo.new(:name => "foo#{i}", :order_field1 => i)
+        end
+      end
+
+      teardown{ ::Foo.collection.clear }
+
+      should "get the correct resource with equal" do
+        expected = ::Foo.collection.select{|i| i.name == "foo1"}.first
+        result = Veneer(::Foo).first(:conditions => {:name => "foo1"})
+        assert_equal expected, result.instance
+      end
     end
   end
 end

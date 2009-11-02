@@ -27,13 +27,13 @@ module Veneer
 
       # @api public
       def first(opts={})
-        conditional = ::Veneer::Conditional.new(opts)
-        ::Kernel.Veneer(find_one(conditional))
+        conditional = ::Veneer::Conditional.from_hash(opts)
+        ::Kernel.Veneer(find_first(conditional))
       end
 
       # @api public
       def all(opts={})
-        conditional = ::Veneer::Conditional.new(opts)
+        conditional = ::Veneer::Conditional.from_hash(opts)
         find_many(conditional).map{|element| ::Kernel.Veneer(element)}
       end
 
