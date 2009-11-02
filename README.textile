@@ -1,4 +1,4 @@
-.h1 veneer
+h1. veneer
 
 Veneer is an interface that sits above Data Sources.
 It differs from ActiveModel in that it doesn't require errors or validations or anything like that.
@@ -8,7 +8,7 @@ Veneer instead aims to provide a simple interface for
  * saving
  * deleting
 
-.h2 Creating and Saving an instance
+h2. Creating and Saving an instance
 
 To create an instance of an object wrap the class in a vaneer call and create or get a new instance.
 
@@ -29,7 +29,7 @@ There are also version that will raise exceptions
 obj = Veneer(MyModel).create!(:some => "attribute")
 </code></pre>
 
-.h2 Deleting
+h2. Deleting
 
 You can delete all the instances of a model or a single instance.
 
@@ -38,7 +38,7 @@ You can delete all the instances of a model or a single instance.
 @some_veneer_model.destroy
 </code></pre>
 
-.h2 Queries
+h2. Queries
 
 Veneer lets you query models with a simple interface.  Only simple queries are supported.
 
@@ -56,13 +56,13 @@ The supported options are:
 * :order
 * :conditions
 
-.h3 Limit & Offset
+h3. Limit & Offset
 
 The :limit option will limit the number of returned results.
 
 The :offset option, when set to an integer x will begin the results at the xth result.
 
-.h3 Order
+h3. Order
 
 Ordering should be set as a string.  By default, the order is decending.
 
@@ -74,7 +74,7 @@ The format of the string is:
   Veneer(MyModel).all(:order => "name, age desc")
 </code></pre>
 
-.h3 Conditions
+h3. Conditions
 
 Conditions are a very simple set of conditions on the fields of the model.  The for of the conditions are:
 
@@ -99,12 +99,12 @@ By default, the operator is set to eql
 
 The results of a query are all wrapped as Veneer instances.
 
-.h3 All Together
+h3. All Together
 
 <pre><code>Veneer(MyModel).all(:order => "name, age asc", :limit => 5, :offset => 15, :conditions => {"name not" => "betty", "age lt" => 18})
 </code></pre>
 
-.h2 Object methods
+h2. Object methods
 
 All methods that aren't found on the adapter, are passed through to the instance.  So to access any attributes on the actual model instance, just call the method on it.
 
