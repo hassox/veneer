@@ -68,8 +68,7 @@ class Test::Unit::TestCase
         end
 
         should "implement :not conditions" do
-          # TODO
-          #Veneer(@klass).all(:conditions => {:name => nil}).map(&:destroy)
+          Veneer(@klass).all(:conditions => {:name => nil}).map(&:destroy)
           total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
           result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"name not" => "bar"}))
           assert_equal((total.size - 1), result.size)

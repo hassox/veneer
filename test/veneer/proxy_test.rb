@@ -21,14 +21,22 @@ class VeneerProxyTest < Test::Unit::TestCase
             send(:"#{f}=", opts[f])
           end
           self.class.collection << self
+          @new_record = true
+        end
+
+        def new_record?
+          !!@new_record
         end
 
         def save
-          @opts[:invalid].nil?
+          result = @opts[:invalid].nil?
+          @new_record = false if result
+          result
         end
 
         def save!
           raise Veneer::Errors::NotSaved if @opts[:invalid]
+          @new_record = false
           true
         end
 
@@ -91,16 +99,24 @@ class VeneerProxyTest < Test::Unit::TestCase
           end
 
           class InstanceWrapper < Veneer::Base::InstanceWrapper
+
+            def new_record?
+              instance.new_record?
+            end
+
             def save!
-              r = instance.save
-              raise Veneer::Errors::NotSaved unless r
-              r
+              instance.save!
             end
 
             def save
               instance.save
             rescue
               false
+            end
+
+            def destroy
+              instance.class.collection.delete(instance)
+              self
             end
           end
         end
@@ -124,6 +140,10 @@ class VeneerProxyTest < Test::Unit::TestCase
       veneer_should_implement_create_with_invalid_attributes
       veneer_should_impelement_destroy_all
       veneer_should_implement_find
+      veneer_should_implement_new_record?
+      veneer_should_implement_save
+      veneer_should_implement_save!
+      veneer_should_implement_destroy
     end
 
     context "all" do
