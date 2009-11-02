@@ -1,0 +1,125 @@
+.h1 veneer
+
+Veneer is an interface that sits above Data Sources.
+It differs from ActiveModel in that it doesn't require errors or validations or anything like that.
+Veneer instead aims to provide a simple interface for
+ * querying
+ * creating
+ * saving
+ * deleting
+
+.h2 Creating and Saving an instance
+
+To create an instance of an object wrap the class in a vaneer call and create or get a new instance.
+
+<pre><code>obj = Veneer(MyModel).new(:some => "attribute")
+obj.save
+
+ # OR
+
+obj = Veneer(MyModel).create(:some => "attribute")
+</code></pre>
+
+There are also version that will raise exceptions
+
+<pre><code>obj = Veneer(MyModel).new(:some => "attribute").save!
+
+# OR
+
+obj = Veneer(MyModel).create!(:some => "attribute")
+</code></pre>
+
+.h2 Deleting
+
+You can delete all the instances of a model or a single instance.
+
+<pre><code>Veneer(MyModel).destroy_all # delete all instances
+
+@some_veneer_model.destroy
+</code></pre>
+
+.h2 Queries
+
+Veneer lets you query models with a simple interface.  Only simple queries are supported.
+
+You can query a single object, or multiple objects.
+
+<pre><code>Veneer(MyModel).all(:conditions => {:name => "foo"})
+
+Veneer(MyModel).all(:conditions => {"age gte" => 18}, :limit => 5)
+</code></pre>
+
+The supported options are:
+
+* :limit
+* :offset
+* :order
+* :conditions
+
+.h3 Limit & Offset
+
+The :limit option will limit the number of returned results.
+
+The :offset option, when set to an integer x will begin the results at the xth result.
+
+.h3 Order
+
+Ordering should be set as a string.  By default, the order is decending.
+
+The format of the string is:
+
+<pre><code>"<field> (<directon>), <field> (direction), ..."
+
+# eg
+  Veneer(MyModel).all(:order => "name, age desc")
+</code></pre>
+
+.h3 Conditions
+
+Conditions are a very simple set of conditions on the fields of the model.  The for of the conditions are:
+
+<pre><code>:conditions => {"field operator" => value}</code></pre>
+
+The supported operators are
+
+* eql
+* not
+* lt  (less than)
+* lte (less than or equal to)
+* gt  (greater than)
+* gte (greater than or equal to)
+* in  (in an array)
+
+By default, the operator is set to eql
+
+<pre><code>
+  Veneer(MyModel).all(:conditions => {"name in" => ["fred", "barney"], "age gte" => 18})
+  Veneer(MyModel).first(:conditions => {:name => "fred"})
+</code></pre>
+
+The results of a query are all wrapped as Veneer instances.
+
+.h3 All Together
+
+<pre><code>Veneer(MyModel).all(:order => "name, age asc", :limit => 5, :offset => 15, :conditions => {"name not" => "betty", "age lt" => 18})
+</code></pre>
+
+.h2 Object methods
+
+All methods that aren't found on the adapter, are passed through to the instance.  So to access any attributes on the actual model instance, just call the method on it.
+
+
+== Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but
+   bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2009 Daniel Neighman. See LICENSE for details.
