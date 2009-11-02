@@ -8,6 +8,10 @@ class Test::Unit::TestCase
         assert_kind_of Hash, @valid_attributes
       end
 
+      teardown do
+        Veneer(@klass).destroy_all
+      end
+
       should "create the object from the hash" do
         r = Veneer(@klass).create(@valid_attributes)
         assert_instance_of @klass::VeneerInterface::InstanceWrapper, r

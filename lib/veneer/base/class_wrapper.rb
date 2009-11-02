@@ -27,14 +27,14 @@ module Veneer
 
       # @api public
       def first(opts={})
-        conditional = Veneer::Conditional.new(opts)
-        Veneer(find_one(conditional))
+        conditional = ::Veneer::Conditional.new(opts)
+        ::Kernel.Veneer(find_one(conditional))
       end
 
       # @api public
       def all(opts={})
-        conditional = Veneer::Conditional.new(opts)
-        find_many(conditional).map{|element| Veneer(element)}
+        conditional = ::Veneer::Conditional.new(opts)
+        find_many(conditional).map{|element| ::Kernel.Veneer(element)}
       end
 
       # Should return an array or array like structure with elements matching the provided conditional

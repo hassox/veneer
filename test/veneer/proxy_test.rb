@@ -7,6 +7,9 @@ class VeneerProxyTest < Test::Unit::TestCase
 
       class ::Foo
         attr_accessor :order_field1, :order_field2, :name
+        def self.veneer_spec_reset!
+          collection.clear
+        end
 
         def self.collection
           @collection ||= []
@@ -36,6 +39,10 @@ class VeneerProxyTest < Test::Unit::TestCase
               ::Kernel.Veneer(klass.new(opts))
             end
 
+            def destroy_all
+              klass.collection.clear
+            end
+
             def find_first(conditional)
               ::Foo.collection.first
             end
@@ -46,7 +53,7 @@ class VeneerProxyTest < Test::Unit::TestCase
               unless conditional.order.empty?
                 order = conditional.order.first
                 result = result.sort_by{|i| i.send(order.field)}
-                result.reverse! if order.ascending?
+                result.reverse! if order.decending?
               end
 
               if conditional.offset
@@ -114,9 +121,8 @@ class VeneerProxyTest < Test::Unit::TestCase
       veneer_should_have_the_required_veneer_constants
       veneer_should_implement_create_with_valid_attributes
       veneer_should_implement_create_with_invalid_attributes
+      veneer_should_impelement_destroy_all
       veneer_should_implement_find
     end
   end
-
-
 end

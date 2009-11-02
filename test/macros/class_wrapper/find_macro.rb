@@ -2,11 +2,13 @@ class Test::Unit::TestCase
   def self.veneer_should_implement_find
     context "implements find" do
       setup do
-        ::Foo.collection.clear
+        Veneer(@klass).destroy_all
         (0..5).each do |i|
-          Veneer(@klass).new(:order_field1 => i)
+          Veneer(@klass).new(:order_field1 => i).save!
         end
       end
+
+      teardown{ Veneer(@klass).destroy_all }
 
       should "impelement a find_all method" do
         result = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
@@ -27,35 +29,36 @@ class Test::Unit::TestCase
       should "implement order" do
         result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1"))
         raw = result.map{|i| i.order_field1 }.compact
-        sorted = raw.sort
+        sorted = raw.sort.reverse
         assert_equal raw, sorted
       end
 
       should "implement order decending" do
         result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1 desc"))
         raw = result.map{|i| i.order_field1 }.compact
-        sorted = raw.sort
+        sorted = raw.sort.reverse
         assert_equal raw, sorted
       end
 
       should "implement order ascending" do
         result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1 asc"))
         raw = result.map{|i| i.order_field1}.compact
-        sorted = raw.sort.reverse
+        sorted = raw.sort
         assert_equal raw, sorted
       end
 
       should "impelment offset" do
         total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
-        result = Veneer(@klass).find_many(Veneer::Conditional.from_hash({:offset => 2}))
-        assert_equal((total.size - 2), result.size)
+        result = Veneer(@klass).find_many(Veneer::Conditional.from_hash({:offset => 2, :limit => 2}))
+
+        assert_equal((total[2..3]), result)
       end
 
       context "conditions" do
         setup do
-          Veneer(@klass).new(:name => "bar")
-          Veneer(@klass).new(:name => "foo")
-          Veneer(@klass).new(:name => "foobar")
+          Veneer(@klass).new(:name => "bar").save
+          Veneer(@klass).new(:name => "foo").save
+          Veneer(@klass).new(:name => "foobar").save
         end
 
         should "implement basic conditions" do
@@ -65,7 +68,9 @@ class Test::Unit::TestCase
         end
 
         should "implement :not conditions" do
-          total =  Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
+          # TODO
+          #Veneer(@klass).all(:conditions => {:name => nil}).map(&:destroy)
+          total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
           result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"name not" => "bar"}))
           assert_equal((total.size - 1), result.size)
         end
@@ -81,14 +86,12 @@ class Test::Unit::TestCase
           total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
           expected = total.select{|i| !i.order_field1.nil? && i.order_field1 >= 3}
           result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"order_field1 gte" => 3}))
-          assert_equal expected.size, result.size
+          assert_equal 3, result.size
         end
 
         should "implement :lt condition" do
-          total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
-          expected = total.select{|i| !i.order_field1.nil? && i.order_field1 < 3}
           result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"order_field1 lt" => 3}))
-          assert_equal expected.size, result.size
+          assert_equal 3, result.size
         end
 
         should "implement a lte condition" do
