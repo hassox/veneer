@@ -1,7 +1,7 @@
 class Test::Unit::TestCase
   def self.veneer_should_implement_save
     context "on an instance" do
-      should "setup the test correctly" do
+     should "setup the test correctly" do
         assert_not_nil @klass
         assert_kind_of Class, @klass
         assert_not_nil @valid_attributes
@@ -16,11 +16,11 @@ class Test::Unit::TestCase
 
       context "save" do
         should "return true when it can save" do
-          assert_true @valid.save
+          assert @valid.save
         end
 
         should "return false when it can't save" do
-          assert_false @invalid.save
+          assert !@invalid.save
         end
       end
     end
@@ -42,7 +42,7 @@ class Test::Unit::TestCase
       end
 
       should "return true when successful" do
-        assert_true @valid.save!
+        assert @valid.save!
       end
 
       should "raise Veneer::Errors::NotSaved when fails to save!" do

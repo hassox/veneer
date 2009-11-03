@@ -10,6 +10,7 @@ module Veneer
           @valid_attributes   = {:name => "foo"}
           @invalid_attributes = {:name => "invalid"}
         end
+
         veneer_should_implement_new_record?
         veneer_should_implement_save
         veneer_should_implement_save!

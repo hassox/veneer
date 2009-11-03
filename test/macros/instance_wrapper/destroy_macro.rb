@@ -14,7 +14,7 @@ class Test::Unit::TestCase
       end
 
       should "setup the spec" do
-        assert_true @valid.save
+        assert @valid.save
         r = Veneer(@klass).first(:conditions => {:name => @valid.instance.name})
         assert_equal @valid, r
       end

@@ -15,19 +15,19 @@ class Test::Unit::TestCase
 
       context "new_record" do
         should "return true when the record is new" do
-          assert_true @instance.new_record?
+          assert @instance.new_record?
         end
 
         should "return false when the record is successfully saved" do
-          assert_true @instance.save
-          assert_false @instance.new_record?
+          assert @instance.save
+          assert !@instance.new_record?
         end
 
         should "return true if the record cannot be saved" do
           v = Veneer(@klass).new(@invalid_attributes)
-          assert_true  v.new_record?
-          assert_false v.save
-          assert_true  v.new_record?
+          assert  v.new_record?
+          assert !v.save
+          assert  v.new_record?
         end
       end
     end
