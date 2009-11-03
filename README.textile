@@ -108,6 +108,19 @@ h2. Object methods
 
 All methods that aren't found on the adapter, are passed through to the instance.  So to access any attributes on the actual model instance, just call the method on it.
 
+h2. Current Support
+
+Veneer currently has built in support for ActiveRecord and DataMapper.
+
+Veneer works on a VeneerInterface inner module though so you can easily impelment you're adapter without requireing it to be in the veneer repo (although pull requests are welcome)
+
+To use DataMapper or ActiveRecord
+
+<pre><code>
+require 'veneer/adapters/activerecord'
+require 'veneer/adapters/datamapper'
+</code></pre>
+
 
 == Note on Patches/Pull Requests
 
