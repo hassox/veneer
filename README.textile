@@ -1,6 +1,9 @@
 h1. veneer
 
-Veneer is an interface that sits above Data Sources.
+Veneer is an interface that sits above Data Sources.  A data source may be an ORM like ActiveRecord or DataMapper, or it could be a document store like MongoMapper or even just an storage like Moneta.
+
+Veneer aims to provide plugin authors with a consistant interface to any of these libraries so that plugins, engines, stacks and gems may be used across data store types.  Reusable code FTW!
+
 It differs from ActiveModel in that it doesn't require errors or validations or anything like that.
 Veneer instead aims to provide a simple interface for
  * querying
