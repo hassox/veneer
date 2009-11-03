@@ -24,7 +24,7 @@ obj.save
 obj = Veneer(MyModel).create(:some => "attribute")
 </code></pre>
 
-There are also version that will raise exceptions
+There are also version that will raise an exception if it could not save
 
 <pre><code>obj = Veneer(MyModel).new(:some => "attribute").save!
 
@@ -48,7 +48,7 @@ Veneer lets you query models with a simple interface.  Only simple queries are s
 
 You can query a single object, or multiple objects.
 
-<pre><code>Veneer(MyModel).all(:conditions => {:name => "foo"})
+<pre><code>Veneer(MyModel).first(:conditions => {:name => "foo"})
 
 Veneer(MyModel).all(:conditions => {"age gte" => 18}, :limit => 5)
 </code></pre>
