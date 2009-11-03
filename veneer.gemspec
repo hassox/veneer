@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Daniel Neighman"]
   s.date = %q{2009-11-03}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{Veneer provides basic querying, saving, deleteing and creating of data stores.}
   s.email = %q{has.sox@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.textile",
      "Rakefile",
+     "VERSION",
      "datamapper_setup.rb",
      "lib/veneer.rb",
      "lib/veneer/adapters/activerecord.rb",
@@ -52,14 +53,15 @@ Gem::Specification.new do |s|
      "test/veneer/adapters/datamapper/datamapper_setup.rb",
      "test/veneer/adapters/datamapper/instance_wrapper_test.rb",
      "test/veneer/base/conditonal_test.rb",
-     "test/veneer/proxy_test.rb"
+     "test/veneer/proxy_test.rb",
+     "veneer.gemspec"
   ]
   s.homepage = %q{http://github.com/hassox/veneer}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{veneer}
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{A thin veneer over data stores}
   s.test_files = [
     "test/macros/class_wrapper/create_macro.rb",
      "test/macros/class_wrapper/delete_macro.rb",
