@@ -4,7 +4,8 @@ Veneer is an interface that sits above Data Sources.  A data source may be an OR
 
 Veneer aims to provide plugin authors with a consistant interface to any of these libraries so that plugins, engines, stacks and gems may be used across data store types.  Reusable code FTW!
 
-It differs from ActiveModel in that it doesn't require errors or validations or anything like that.
+It differs from ActiveModel in that it doesn't provide any validation support, serialization, callbacks, state machine or anything like that.  Veneer is intended to work with ActiveModel to provide a data store independant interface to create reusable code.
+
 Veneer instead aims to provide a simple interface for
  * querying
  * creating
@@ -115,7 +116,7 @@ h2. Current Support
 
 Veneer currently has built in support for ActiveRecord and DataMapper.
 
-Veneer works on a VeneerInterface inner module though so you can easily impelment you're adapter without requireing it to be in the veneer repo (although pull requests are welcome)
+Veneer works on a VeneerInterface inner module though so you can easily impelment your adapter without requiring it to be in the veneer repo (although pull requests are welcome)
 
 To use DataMapper or ActiveRecord
 
