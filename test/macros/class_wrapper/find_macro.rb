@@ -90,9 +90,9 @@ class Test::Unit::TestCase
 
         should "implement gte conditions" do
           total = Veneer(@klass).find_many(Veneer::Conditional.from_hash({}))
-          expected = total.select{|i| !i.order_field1.nil? && i.order_field1 >= 3}
-          result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"order_field1 gte" => 3}))
-          assert_equal 3, result.size
+          expected = total.select{|i| !i.order_field1.nil? && i.order_field1 >= 3}.map{|i| i.order_field1}
+          result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:conditions => {"order_field1 gte" => 3})).map{|o| o.order_field1}
+          assert_equal expected, result
         end
 
         should "implement :lt condition" do
