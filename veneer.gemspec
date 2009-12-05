@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{veneer}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Daniel Neighman"]
-  s.date = %q{2009-11-03}
+  s.date = %q{2009-12-05}
   s.description = %q{Veneer provides basic querying, saving, deleteing and creating of data stores.}
   s.email = %q{has.sox@gmail.com}
   s.extra_rdoc_files = [
@@ -25,12 +25,17 @@ Gem::Specification.new do |s|
      "VERSION",
      "datamapper_setup.rb",
      "lib/veneer.rb",
+     "lib/veneer/adapters/active_record.rb",
      "lib/veneer/adapters/activerecord.rb",
      "lib/veneer/adapters/activerecord/class_wrapper.rb",
      "lib/veneer/adapters/activerecord/instance_wrapper.rb",
+     "lib/veneer/adapters/data_mapper.rb",
      "lib/veneer/adapters/datamapper.rb",
      "lib/veneer/adapters/datamapper/class_wrapper.rb",
      "lib/veneer/adapters/datamapper/instance_wrapper.rb",
+     "lib/veneer/adapters/mongomapper.rb",
+     "lib/veneer/adapters/mongomapper/class_wrapper.rb",
+     "lib/veneer/adapters/mongomapper/instance_wrapper.rb",
      "lib/veneer/base/class_wrapper.rb",
      "lib/veneer/base/conditional.rb",
      "lib/veneer/base/instance_wrapper.rb",
@@ -52,6 +57,9 @@ Gem::Specification.new do |s|
      "test/veneer/adapters/datamapper/class_wrapper_test.rb",
      "test/veneer/adapters/datamapper/datamapper_setup.rb",
      "test/veneer/adapters/datamapper/instance_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/class_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/instance_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/mongomapper_setup.rb",
      "test/veneer/base/conditonal_test.rb",
      "test/veneer/proxy_test.rb",
      "veneer.gemspec"
@@ -78,6 +86,9 @@ Gem::Specification.new do |s|
      "test/veneer/adapters/datamapper/class_wrapper_test.rb",
      "test/veneer/adapters/datamapper/datamapper_setup.rb",
      "test/veneer/adapters/datamapper/instance_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/class_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/instance_wrapper_test.rb",
+     "test/veneer/adapters/mongomapper/mongomapper_setup.rb",
      "test/veneer/base/conditonal_test.rb",
      "test/veneer/proxy_test.rb"
   ]
