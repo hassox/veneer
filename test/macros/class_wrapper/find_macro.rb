@@ -27,10 +27,17 @@ class Test::Unit::TestCase
       end
 
       should "implement order" do
-        result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1"))
+        result = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1 asc"))
         raw = result.map{|i| i.order_field1 }.compact
-        sorted = raw.sort.reverse
+        sorted = raw.sort
         assert_equal raw, sorted
+      end
+
+      should "implement asc and desc order as opposites" do
+        result_asc  = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1 asc")).map{|o| o.order_field1}
+        result_desc = Veneer(@klass).find_many(Veneer::Conditional.from_hash(:order => "order_field1 desc")).map{|o| o.order_field1}
+
+        assert_equal result_asc, result_desc.reverse
       end
 
       should "implement order decending" do

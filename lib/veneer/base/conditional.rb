@@ -7,8 +7,8 @@ module Veneer
 
     attr_reader :options
     def initialize(opts)
-      @options = HashWithIndifferentAccess.new(opts || {})
-      odr = Array.new([@options.delete(:order)].flatten.compact)
+      @options = Hashie::Mash.new(opts || {})
+      odr = [@options.delete("order")].flatten.compact
       @ordering = odr.nil? || odr.empty? ? [] : begin
         odr.map do |order|
           field, direction = order.split(" ")
