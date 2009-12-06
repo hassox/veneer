@@ -20,6 +20,10 @@ module MongoMapper
           klass.all(opts)
         end
 
+        def before_save(*methods)
+          klass.before_save *methods
+        end
+
         private
         def conditional_to_mongo_opts(c)
           opts = {}

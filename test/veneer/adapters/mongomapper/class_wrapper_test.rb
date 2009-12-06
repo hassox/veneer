@@ -16,6 +16,7 @@ module Veneer
         veneer_should_impelement_destroy_all
         veneer_should_implement_create_with_invalid_attributes
         veneer_should_implement_find
+        veneer_should_implement_before_save_hooks
       end
     end
   end

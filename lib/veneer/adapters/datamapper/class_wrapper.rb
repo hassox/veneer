@@ -20,6 +20,14 @@ module DataMapper
           klass.all(opts)
         end
 
+        def before_save(*methods)
+          klass.class_eval do
+            methods.each do |meth|
+              before :save, meth
+            end
+          end
+        end
+
         private
         def opts_from_conditional_for_dm(c)
           opts = {}

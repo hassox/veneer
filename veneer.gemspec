@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Daniel Neighman"]
-  s.date = %q{2009-12-05}
+  s.date = %q{2009-12-06}
   s.description = %q{Veneer provides basic querying, saving, deleteing and creating of data stores.}
   s.email = %q{has.sox@gmail.com}
   s.extra_rdoc_files = [

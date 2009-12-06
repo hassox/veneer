@@ -5,5 +5,6 @@ module Veneer
     class NotSaved                        < VeneerError;    end
     class ConditionalOperatorNotSupported < VeneerError;    end
     class NotImplemented                  < VeneerError;    end
+    class BeforeSaveError                 < VeneerError;    end
   end
 end

@@ -20,6 +20,10 @@ module ActiveRecord
           klass.find(:all,opts)
         end
 
+        def before_save(*methods)
+          klass.before_save *methods
+        end
+
         private
         def conditional_to_ar_opts(c)
           opts = {}

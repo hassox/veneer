@@ -6,6 +6,20 @@ module Veneer
         @instance, @options = instance, opts
       end
 
+      def class
+        @instance.class
+      end
+
+      def handle_before_save_error(e)
+        case e.message
+        when Array
+          instance.errors.add(e.message[0], e.message[1])
+        when String
+          instance.errors.add("", e.message)
+        end
+        false
+      end
+
       # Checks equality of the instances
       # @api public
       def ==(other)
