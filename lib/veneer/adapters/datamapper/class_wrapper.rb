@@ -46,6 +46,7 @@ module DataMapper
         def ensure_validations_loaded!
           unless defined?(::DataMapper::Validate)
             ::Kernel.require 'dm-validations'
+            @klass.class_eval{include ::DataMapper::Validate}
           end
         end
 
