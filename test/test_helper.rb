@@ -9,6 +9,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'veneer'
 
+$validations = []
+
 class Test::Unit::TestCase
   include Veneer::Test::Helpers
 end

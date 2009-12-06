@@ -24,6 +24,24 @@ module ActiveRecord
           klass.before_save *methods
         end
 
+        %w(
+          validates_presence_of
+          validates_uniqueness_of
+          validates_confirmation_of
+        ).each do |meth|
+        class_eval <<-RUBY
+          def #{meth}(*args)
+            klass.#{meth}(*args)
+          end
+          RUBY
+        end
+
+        def validates_with_method(*methods)
+          methods.each do |meth|
+            @klass.validate meth
+          end
+        end
+
         private
         def conditional_to_ar_opts(c)
           opts = {}

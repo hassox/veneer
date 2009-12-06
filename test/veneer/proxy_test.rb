@@ -134,16 +134,6 @@ class VeneerProxyTest < Test::Unit::TestCase
         @invalid_attributes = {:invalid => true}
         @instance           = ::Foo.new
       end
-
-      veneer_should_have_the_required_veneer_constants
-      veneer_should_implement_create_with_valid_attributes
-      veneer_should_implement_create_with_invalid_attributes
-      veneer_should_impelement_destroy_all
-      veneer_should_implement_find
-      veneer_should_implement_new_record?
-      veneer_should_implement_save
-      veneer_should_implement_save!
-      veneer_should_implement_destroy
     end
 
     context "all" do

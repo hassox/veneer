@@ -28,7 +28,27 @@ module DataMapper
           end
         end
 
+        [
+          %w(validates_presence_of      validates_present),
+          %w(validates_uniqueness_of    validates_is_unique),
+          %w(validates_confirmation_of  validates_is_confirmed),
+          %w(validates_with_method      validates_with_method)
+        ].each do |(meth,natural)|
+          class_eval <<-RUBY
+            def #{meth}(*args)
+              ensure_validations_loaded!
+              klass.#{natural}(*args)
+            end
+          RUBY
+        end
+
         private
+        def ensure_validations_loaded!
+          unless defined?(::DataMapper::Validate)
+            ::Kernel.require 'dm-validations'
+          end
+        end
+
         def opts_from_conditional_for_dm(c)
           opts = {}
 

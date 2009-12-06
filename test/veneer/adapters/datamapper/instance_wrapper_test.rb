@@ -7,8 +7,8 @@ module Veneer
       context "DataMapper Veneer Adapter" do
         setup do
           @klass = DMFoo
-          @valid_attributes   = {:name => "foo"}
-          @invalid_attributes = {:name => "invalid"}
+          @valid_attributes   = {:name => "foo", :password => "pass", :password_confirmation => "pass"}
+          @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
         end
 
         veneer_should_implement_new_record?

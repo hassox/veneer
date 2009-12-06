@@ -7,8 +7,8 @@ module Veneer
       context "Active Record Veneer Adapter" do
         setup do
           @klass              = ::ActiveRecordFoo
-          @valid_attributes   = {:name => "foo"}
-          @invalid_attributes = {:name => "invalid"}
+          @valid_attributes   = {:name => "foo", :password => "pass", :password_confirmation => "pass"}
+          @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
         end
         veneer_should_have_the_required_veneer_constants
         veneer_should_implement_create_with_valid_attributes
@@ -16,7 +16,8 @@ module Veneer
         veneer_should_implement_create_with_invalid_attributes
         veneer_should_implement_find
         veneer_should_implement_before_save_hooks
-     end
+        veneer_should_implement_validations
+      end
     end
   end
 end

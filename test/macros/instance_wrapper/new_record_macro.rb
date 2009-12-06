@@ -1,6 +1,10 @@
 class Test::Unit::TestCase
   def self.veneer_should_implement_new_record?
     context "on an instance" do
+      setup do
+        Veneer(@klass).destroy_all
+      end
+
       should "setup the test correctly" do
         assert_not_nil @klass
         assert_kind_of Class, @klass

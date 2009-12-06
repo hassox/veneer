@@ -11,11 +11,15 @@ module Veneer
       end
 
       def handle_before_save_error(e)
-        case e.message
-        when Array
-          instance.errors.add(e.message[0], e.message[1])
-        when String
-          instance.errors.add("", e.message)
+        if instance.respond_to?(:errors) && instance.errors.respond_to?(:add)
+          case e.message
+          when Array
+            instance.errors.add(e.message[0], e.message[1])
+          when String
+            instance.errors.add("", e.message)
+          end
+        else
+          ::STDOUT.puts e.message
         end
         false
       end
