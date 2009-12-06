@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{veneer}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Daniel Neighman"]
@@ -46,12 +46,14 @@ Gem::Specification.new do |s|
      "test/macros/class_wrapper/delete_macro.rb",
      "test/macros/class_wrapper/find_macro.rb",
      "test/macros/class_wrapper/hooks.rb",
+     "test/macros/class_wrapper/validations.rb",
      "test/macros/instance_wrapper/destroy_macro.rb",
      "test/macros/instance_wrapper/new_record_macro.rb",
      "test/macros/instance_wrapper/save_macro.rb",
      "test/macros/veneer_constants_interface.rb",
      "test/support/before_save_mixin.rb",
      "test/support/helpers.rb",
+     "test/support/valiations_method_method.rb",
      "test/test_helper.rb",
      "test/veneer/adapters/active_record/active_record_setup.rb",
      "test/veneer/adapters/active_record/class_wrapper_test.rb",
@@ -77,12 +79,14 @@ Gem::Specification.new do |s|
      "test/macros/class_wrapper/delete_macro.rb",
      "test/macros/class_wrapper/find_macro.rb",
      "test/macros/class_wrapper/hooks.rb",
+     "test/macros/class_wrapper/validations.rb",
      "test/macros/instance_wrapper/destroy_macro.rb",
      "test/macros/instance_wrapper/new_record_macro.rb",
      "test/macros/instance_wrapper/save_macro.rb",
      "test/macros/veneer_constants_interface.rb",
      "test/support/before_save_mixin.rb",
      "test/support/helpers.rb",
+     "test/support/valiations_method_method.rb",
      "test/test_helper.rb",
      "test/veneer/adapters/active_record/active_record_setup.rb",
      "test/veneer/adapters/active_record/class_wrapper_test.rb",
