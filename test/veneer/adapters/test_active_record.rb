@@ -1,3 +1,5 @@
+require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
+
 require 'activerecord'
 require 'veneer/adapters/activerecord'
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
@@ -7,6 +9,8 @@ class CreateActiveRecordFoo < ActiveRecord::Migration
   def self.up
     create_table :active_record_foos, :force => true do |t|
       t.string  :name
+      t.string  :title
+      t.string  :description
       t.integer :order_field1
     end
   end
@@ -19,7 +23,6 @@ end
 CreateActiveRecordFoo.up
 
 class ActiveRecordFoo < ActiveRecord::Base
-  attr_accessor :password, :password_confirmation
   def self.veneer_spec_reset!
     delete_all
   end
@@ -32,3 +35,22 @@ class ActiveRecordFoo < ActiveRecord::Base
     errors.add(:name, "Name cannot be v_with_m_test") if name == "v_with_m_test"
   end
 end
+
+class ActiveRecordVeneerTest < ::Test::Unit::TestCase
+  include Veneer::Lint
+
+  def setup
+    @klass              = ::ActiveRecordFoo
+    @valid_attributes   = {:name => "foo", :title => "title", :description => "description"}
+    @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
+  end
+
+  def create_valid_items(num)
+    attr = @valid_attributes
+
+    (1..num).each do |i|
+      ActiveRecordFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}")
+    end
+  end
+end
+

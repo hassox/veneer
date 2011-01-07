@@ -4,25 +4,14 @@
         class InstanceWrapper < ::Veneer::Base::InstanceWrapper
 
           def save
-            result = false
-            instance.class.transaction do
-              result = instance.save
-            end
-            result
-          rescue ::Veneer::Errors::BeforeSaveError => e
-            handle_before_save_error(e)
+            instance.save
           end
 
           def save!
             result = false
-            instance.class.transaction do
-              result = instance.save
-              raise ::Veneer::Errors::NotSaved unless result
-              result
-            end
+            result = instance.save
+            raise ::Veneer::Errors::NotSaved unless result
             result
-          rescue ::Veneer::Errors::BeforeSaveError => e
-            raise ::Veneer::Errors::NotSaved, e.message
           end
 
           def new_record?

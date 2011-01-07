@@ -1,8 +1,4 @@
 require 'hashie'
-require 'dirge'
-
-$:.unshift File.expand_path(File.join(File.dirname(__FILE__), "lib"))
-
 require 'veneer/core_ext/kernel'
 
 unless defined?(BasicObject)
@@ -28,6 +24,7 @@ module Veneer
   autoload :Errors,       'veneer/errors'
   autoload :Proxy,        'veneer/proxy'
   autoload :Conditional,  'veneer/base/conditional'
+  autoload :Lint,         'veneer/lint'
 
   module Base
     autoload :ClassWrapper,     'veneer/base/class_wrapper'

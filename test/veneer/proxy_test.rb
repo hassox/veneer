@@ -51,63 +51,38 @@ class VeneerProxyTest < Test::Unit::TestCase
               klass.collection.clear
             end
 
-            def find_first(conditional)
-              find_many(conditional).first
-            end
+            def find_many(opts)
+              result = ::Foo.collection.dup
 
-            def find_many(conditional)
-              result = ::Foo.collection
-
-              unless conditional.order.empty?
-                order = conditional.order.first
-                result = result.sort_by{|i| i.send(order.field)}
-                result.reverse! if order.decending?
+              case opts.order
+              when Array # first order only supported
+                item = opts.order.first
+                field, direction = item.split(" ")
+                result = result.sort_by{|i| i.send(field)}
+                result.reverse! if direction.to_s /desc/i
+              when String, Symbol
+                result = result.sort_by{|i| i.send(opts.order) }
               end
 
-              if conditional.offset
-                offset = conditional.offset.to_i
+              if opts.offset?
+                offset = opts.offset.to_i
                 result = result[offset..-1]
               end
 
-              conditional.conditions.each do |condition|
-                filtered = case condition.operator
-                when :eql
-                  result.select{|i| i.send(condition.field) == condition.value}
-                when :not
-                  result.select{|i| i.send(condition.field) != condition.value}
-                when :gt
-                  result.select{|i| !i.send(condition.field).nil? && (i.send(condition.field) > condition.value)}
-                when :gte
-                  result.select{|i| !i.send(condition.field).nil? && (i.send(condition.field) >= condition.value)}
-                when :lt
-                  result.select{|i| !i.send(condition.field).nil? && (i.send(condition.field) < condition.value)}
-                when :lte
-                  result.select{|i| !i.send(condition.field).nil? && (i.send(condition.field) <= condition.value)}
-                when :in
-                  result.select{|i| condition.value.include?(i.send(condition.field))}
-                else
-                  []
+              if opts.conditions?
+                opts.conditions.each do |field, value|
+                  result = result.select{|i| i.send(field) == value}.flatten.compact
                 end
-                result = filtered.flatten.compact
               end
-              if conditional.limit
-                result = result[0..(conditional.limit - 1)]
+
+              if opts.limit?
+                result = result[0..(opts.limit.to_i - 1)]
               end
               result
             end
-
           end
 
           class InstanceWrapper < Veneer::Base::InstanceWrapper
-
-            def new_record?
-              instance.new_record?
-            end
-
-            def save!
-              instance.save!
-            end
-
             def save
               instance.save
             rescue
@@ -170,7 +145,7 @@ class VeneerProxyTest < Test::Unit::TestCase
 
       teardown{ ::Foo.collection.clear }
 
-      should "get the correct resource with equal" do
+      should "get the correct resource" do
         expected = ::Foo.collection.select{|i| i.name == "foo1"}.first
         result = Veneer(::Foo).first(:conditions => {:name => "foo1"})
         assert_equal expected, result.instance

@@ -10,69 +10,48 @@ module DataMapper
           klass.all.destroy
         end
 
-        def find_first(conditional)
-          opts = opts_from_conditional_for_dm(conditional)
-          klass.first(opts)
+        def find_first(opts)
+          klass.first(dm_conditions_from_opts(opts))
         end
 
-        def find_many(conditional)
-          opts = opts_from_conditional_for_dm(conditional)
-          klass.all(opts)
-        end
-
-        def before_save(*methods)
-          klass.class_eval do
-            methods.each do |meth|
-              before :save, meth
-            end
-          end
-        end
-
-        [
-          %w(validates_presence_of      validates_present),
-          %w(validates_uniqueness_of    validates_is_unique),
-          %w(validates_confirmation_of  validates_is_confirmed),
-          %w(validates_with_method      validates_with_method)
-        ].each do |(meth,natural)|
-          class_eval <<-RUBY
-            def #{meth}(*args)
-              ensure_validations_loaded!
-              klass.#{natural}(*args)
-            end
-          RUBY
+        def find_many(opts)
+          klass.all(dm_conditions_from_opts(opts))
         end
 
         private
-        def ensure_validations_loaded!
-          unless defined?(::DataMapper::Validate)
-            ::Kernel.require 'dm-validations'
-            @klass.class_eval{include ::DataMapper::Validate}
-          end
+        def order_from_string(str)
+          field, direction = str.split " "
+          direction ||= "asc"
+          field.to_sym.send(direction) if allowed_field?(field)
         end
 
-        def opts_from_conditional_for_dm(c)
+        def allowed_field?(field)
+          @allowed ||= klass.properties.map(&:name).map(&:to_s)
+          @allowed.include?(field.to_s)
+        end
+
+        def dm_conditions_from_opts(raw)
           opts = {}
 
-          opts[:limit]  = c.limit  if c.limit
-          opts[:offset] = c.offset if c.offset
+          opts[:limit]  = raw.limit  if raw.limit?
+          opts[:offset] = raw.offset if raw.offset?
 
-          unless c.order.empty?
-            opts[:order] = c.order.inject([]) do |ary, cnd|
-              ary << cnd.field.send(cnd.direction)
-              ary
+          if raw.order.present?
+            opts[:order] = case raw.order
+            when Array
+              raw.order.inject([]) do |ary, str|
+                ary << order_from_string(str)
+              end.compact
+            when String
+              order_from_string(raw.order)
+            when Symbol
+              raw.order
             end
           end
 
-          unless c.conditions.empty?
-            c.conditions.each do |cd|
-              case cd.operator
-              when :eql
-                opts[cd.field] = cd.value
-              when :not, :gt, :gte, :lt, :lte
-                opts[cd.field.send(cd.operator)] = cd.value
-              when :in
-                opts[cd.field] = ::Array.new([cd.value].flatten.compact)
-              end
+          if raw.conditions.present?
+            raw.conditions.each do |field, value|
+              opts[field] = value if allowed_field?(field)
             end
           end
           opts

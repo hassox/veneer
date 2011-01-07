@@ -1,1 +1,1 @@
-require ~'./datamapper'
+require 'veneer/adapters/datamapper'

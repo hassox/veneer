@@ -1,5 +1,13 @@
 module Veneer
   module Base
+    # required methods
+    #
+    # save
+    # save! # failure should raise ::Veneer::Errors::NotSaved
+    # update
+    # destroy
+    # new_record?
+
     class InstanceWrapper
       attr_accessor :instance, :options
       def initialize(instance, opts = {})
@@ -8,20 +16,6 @@ module Veneer
 
       def class
         @instance.class
-      end
-
-      def handle_before_save_error(e)
-        if instance.respond_to?(:errors) && instance.errors.respond_to?(:add)
-          case e.message
-          when Array
-            instance.errors.add(e.message[0], e.message[1])
-          when String
-            instance.errors.add("", e.message)
-          end
-        else
-          ::STDOUT.puts e.message
-        end
-        false
       end
 
       # Checks equality of the instances
@@ -45,6 +39,10 @@ module Veneer
           instance.send(:"#{attr}=",value)
         end
         save
+      end
+
+      def update!(attributes = {})
+        raise Veneer::Errors::NotSaved unless update(attributes)
       end
 
       # send all methods to the instance

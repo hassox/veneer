@@ -1,0 +1,183 @@
+module Veneer
+  module Lint
+    def self.included(base)
+      base.class_eval do
+        include ::Veneer::Lint::ClassWrapperLint
+        include ::Veneer::Lint::InstanceWrapperLint
+      end
+    end
+
+    def _veneer_teardown
+      Veneer(@klass).destroy_all
+    end
+
+    module ClassWrapperLint
+      def test_should_have_the_correct_inner_constants_for_veneer
+        assert_nothing_raised do
+          @klass::VeneerInterface
+          @klass::VeneerInterface::ClassWrapper
+          @klass::VeneerInterface::InstanceWrapper
+        end
+        assert @klass::VeneerInterface::ClassWrapper.ancestors.include?(::Veneer::Base::ClassWrapper)
+        assert @klass::VeneerInterface::InstanceWrapper.ancestors.include?(::Veneer::Base::InstanceWrapper)
+      end
+
+      def test_should_setup_the_veneer_lint_class_wrapper_with_a_klass
+        assert_not_nil @klass, "@klass should provide a class to test Veneer with"
+        assert_kind_of Class, @klass
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_provide_valid_attributes
+        assert_not_nil @valid_attributes
+        assert_kind_of Hash, @valid_attributes
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_provide_invalid_attributes
+        assert_not_nil @invalid_attributes
+        assert_kind_of Hash, @invalid_attributes
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_create_an_object_from_a_hash
+        r = Veneer(@klass).create(@valid_attributes)
+        assert_instance_of @klass::VeneerInterface::InstanceWrapper, r
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_create_the_object_from_the_hash_with_create!
+        r = Veneer(@klass).create!(@valid_attributes)
+        assert_instance_of @klass::VeneerInterface::InstanceWrapper, r
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_instantiate_a_new_instance_of_the_object
+        r = Veneer(@klass).new(@valid_attributes)
+        assert_instance_of @klass::VeneerInterface::InstanceWrapper, r
+      ensure
+        _veneer_teardown
+      end
+
+      def test_implementst_create_with_invalid_attributes
+        assert_raise Veneer::Errors::NotSaved do
+          Veneer(@klass).create!(@invalid_attributes)
+        end
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_not_raise_when_create_can_save
+        assert_nothing_raised do
+          Veneer(@klass).create(@invalid_attributes)
+        end
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_destory_all
+        Veneer(@klass).create(@valid_attributes)
+        assert Veneer(@klass).all.size > 0
+        Veneer(@klass).destroy_all
+        assert_equal 0, Veneer(@klass).all.size
+      end
+
+      def test_should_find_all
+        create_valid_items(4)
+        result = Veneer(@klass).all
+        assert_kind_of Array, result
+        assert_equal 4, result.size
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_find_first
+        create_valid_items(3)
+        result = Veneer(@klass).all
+        assert_not_nil result
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_limit
+        create_valid_items(4)
+        result = Veneer(@klass).all(:limit => 2)
+        assert_equal 2, result.size
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_order
+        create_valid_items(4)
+        key = @valid_attributes.keys.first
+        ordered_result = Veneer(@klass).all(:order => key)
+        result = Veneer(@klass).all
+        result = result.sort_by{ |i| i.send(key) }
+        assert_equal ordered_result, result
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_order_with_desc
+        create_valid_items(4)
+        key = @valid_attributes.keys.first
+        ordered_result = Veneer(@klass).all(:order => "#{key} desc")
+        result = Veneer(@klass).all
+        result = result.sort_by{ |i| i.send(key) }.reverse
+        assert_equal ordered_result, result
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_offset
+        create_valid_items(4)
+        result = Veneer(@klass).all
+        offset_result = Veneer(@klass).all(:offset => 2, :limit => 2)
+        assert_equal result[2..4], offset_result
+      ensure
+        _veneer_teardown
+      end
+
+      def test_conditions
+        create_valid_items(3)
+        Veneer(@klass).create(@valid_attributes)
+        result = Veneer(@klass).all(:conditions => @valid_attributes)
+        assert_equal 1, result.size
+      ensure
+        _veneer_teardown
+      end
+    end
+
+    module InstanceWrapperLint
+      def test_should_implement_destroy
+        item = Veneer(@klass).create(@valid_attributes)
+        assert Veneer(@klass).all.size > 0
+        assert item.kind_of?(Veneer::Base::InstanceWrapper)
+        item.destroy
+        assert Veneer(@klass).all.size == 0
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_new_record?
+        item = Veneer(@klass).new(@valid_attributes)
+        assert item.new_record?
+        assert item.save
+        assert !item.new_record?
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_save!
+        assert_raises Veneer::Errors::NotSaved do
+          Veneer(@klass).create!(@invalid_attributes)
+        end
+      end
+    end
+  end
+end

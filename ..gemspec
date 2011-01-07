@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "veneer/version"
+require "./version"
 
 Gem::Specification.new do |s|
-  s.name        = "veneer"
-  s.version     = Veneer::VERSION
+  s.name        = "."
+  s.version     = .::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Daniel Neighman"]
-  s.email       = ["has.sox@gmail.com"]
+  s.authors     = ["TODO: Write your name"]
+  s.email       = ["TODO: Write your email address"]
   s.homepage    = ""
-  s.description = %q{Veneer provides basic querying, saving, deleteing and creating interface for data stores.}
-  s.summary     = %q{Basic query interface for persistant data stores}
+  s.summary     = %q{TODO: Write a gem summary}
+  s.description = %q{TODO: Write a gem description}
 
-  s.rubyforge_project = "veneer"
+  s.rubyforge_project = "."
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

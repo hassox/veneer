@@ -1,1 +1,1 @@
-require ~'./activerecord'
+require 'veneer/adapters/activerecord'

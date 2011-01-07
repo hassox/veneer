@@ -11,7 +11,6 @@ module Kernel
       obj.class::VeneerInterface::InstanceWrapper.new(obj, opts)
     end
   rescue NameError => e
-    puts e.message
     raise Veneer::Errors::NotCompatible
   end # Veneer()
 end
