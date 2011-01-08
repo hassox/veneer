@@ -66,7 +66,7 @@ Veneer(User).collection_associations # grabs things like has_many and has n
 Veneer(User).member_associations # grabs singular associations like belongs_to and has_one
 
 # ====> results in
-[ { :name => "asociaiton_name", :class => "association_class" }]
+[ { :name => "asociaiton_name", :class => AssociationClass }]
 
 </code></pre>
 
