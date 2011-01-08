@@ -6,6 +6,38 @@ module ActiveRecord
           ::Kernel::Veneer(klass.new(opts))
         end
 
+        def collection_associations
+          @collection_associations ||= begin
+            associations = []
+            [:has_many, :has_and_belongs_to_many].each do |macro|
+              associations += klass.reflect_on_all_associations(macro)
+            end
+            associations.inject([]) do |ary, reflection|
+              ary << {
+                :name  => reflection.name,
+                :class => reflection.class_name.constantize
+              }
+              ary
+            end
+          end
+        end
+
+        def member_associations
+          @member_associations ||= begin
+            associations = []
+            [:belongs_to, :has_one].each do |macro|
+              associations += klass.reflect_on_all_associations(macro)
+            end
+            associations.inject([]) do |ary, reflection|
+              ary << {
+                :name  => reflection.name,
+                :class => reflection.class_name.constantize
+              }
+              ary
+            end
+          end
+        end
+
         def destroy_all
           klass.destroy_all
         end

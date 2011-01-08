@@ -14,8 +14,12 @@ class DMFoo
   property :title,        String
   property :description,  String
   property :order_field1, Integer
+  property :item_id,      Integer, :required => false
 
   validates_with_method :name, :method => :check_name
+
+  has n,      :items,  :model => "DMFoo", :child_key => [:item_id]
+  belongs_to  :master, :model => "DMFoo", :child_key => [:item_id]
 
   def check_name
     if name == "invalid"

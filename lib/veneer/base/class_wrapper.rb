@@ -16,6 +16,33 @@ module Veneer
         @klass, @opts = klass, opts
       end
 
+      # Provides an array of associations of the format
+      # [
+      #   {
+      #     :name       => :association_name,
+      #     :class_name => 'TheClass'
+      #   }
+      # ]
+      #
+      # The collection associations maps has_many, has n, embeds_many and the like.
+      # @api public
+      def collection_associations
+        []
+      end
+
+      # Provides an array of association for belongs_to type associaions
+      # of the format:
+      #
+      # [
+      #   {
+      #     :name       => :assocaition_name,
+      #     :class_name => 'TheClass'
+      #   }
+      # ]
+      def member_associations
+        []
+      end
+
       # Create an instance of the object.
       # That is, instantiate and persist it in one step.
       # Raise an error if the object is not persisted

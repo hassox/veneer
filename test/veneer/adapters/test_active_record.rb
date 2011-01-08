@@ -12,6 +12,7 @@ class CreateActiveRecordFoo < ActiveRecord::Migration
       t.string  :title
       t.string  :description
       t.integer :order_field1
+      t.integer :belonger_id
     end
   end
 
@@ -23,6 +24,9 @@ end
 CreateActiveRecordFoo.up
 
 class ActiveRecordFoo < ActiveRecord::Base
+  has_many :items, :class_name => "ActiveRecordFoo", :foreign_key => 'belonger_id'
+  belongs_to :master, :class_name => "ActiveRecordFoo", :foreign_key => 'belonger_id'
+
   def self.veneer_spec_reset!
     delete_all
   end

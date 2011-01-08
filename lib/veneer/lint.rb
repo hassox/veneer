@@ -151,6 +151,26 @@ module Veneer
       ensure
         _veneer_teardown
       end
+
+      def test_collection_associations
+        result = Veneer(@klass).collection_associations
+        assert result.kind_of?(Array)
+        assert result.size > 0
+        hash = result.first
+        assert hash.kind_of?(Hash)
+        assert_not_nil hash[:name]
+        assert_not_nil hash[:class]
+      end
+
+      def test_member_associations
+        result = Veneer(@klass).member_associations
+        assert result.kind_of?(Array)
+        assert result.size > 0
+        hash = result.first
+        assert hash.kind_of?(Hash)
+        assert_not_nil hash[:name]
+        assert_not_nil hash[:class]
+      end
     end
 
     module InstanceWrapperLint

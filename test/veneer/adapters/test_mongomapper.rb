@@ -17,6 +17,9 @@ class MongoFoo
 
   validate_on_create :check_name
 
+  belongs_to :foo, :class_name => "MongoFoo"
+  many :foos, :class_name => "MongoFoo"
+
   def check_name
     errors.add(:name, "may not be invalid") if name == "invalid"
   end

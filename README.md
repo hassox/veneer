@@ -20,106 +20,54 @@ Veneer instead aims to provide a simple interface for
 
 There is no interface for validations, since this interface is handled as part of ActiveModel
 
-## Creating and Saving an instance
+## Quick Intro
 
-To create an instance of an object wrap the class in a vaneer call and create or get a new instance.
+<pre><code># Assume User class model
 
-<pre><code>obj = Veneer(MyModel).new(:some => "hash", :of => "attributes")
-obj.save
+# Create new items
+Veneer(User).new(:some => "parameters")     # instantiate only
+Veneer(User).create(:some => "parameters")  # instantiate and persist
+Veneer(User).create!(:some => "parameters") # create and raise on failure
 
- # OR
+# Query
 
-obj = Veneer(MyModel).create(:some => "hash", :of => "attributes")
-</code></pre>
+# The supported options are:
+#
+# * :limit
+# * :offset
+# * :order
+# * :conditions (hash with keys => <Array|Primitive|Range>
 
-There are also version that will raise an exception if it could not save
+# First can be used in place of all to get a single item
+# All options can be used together
 
-<pre><code>obj = Veneer(MyModel).new(:some => "attribute").save!
+Veneer(User).all(:limit => 3, :offset => 2)
+Veneer(User).all(:order => ["name", "dob desc"])
+Veneer(User).all(:conditions => {:some => "condition"})
 
+# Update object
+user = Veneer(User).first(:conditions => {:id => params[:id]})
+user.update(:some => "new values") # updates and persists changes
+
+# Destroy object
+user = Veneer(User).first(:conditions => {:id => params[:id]})
+user.destroy
+
+Veneer(User).destroy_all
+
+# Save
+user.name = "bar"
+user.save
 # OR
+user.save! # raise on fail
 
-obj = Veneer(MyModel).create!(:some => "attribute")
-</code></pre>
+# Find associations
+Veneer(User).collection_associations # grabs things like has_many and has n
+Veneer(User).member_associations # grabs singular associations like belongs_to and has_one
 
-h2. Deleting
+# ====> results in
+[ { :name => "asociaiton_name", :class => "association_class" }]
 
-You can delete all the instances of a model or a single instance.
-
-<pre><code>Veneer(MyModel).destroy\_all # delete all instances
-
-@some\_veneer\_model.destroy
-</code></pre>
-
-### Updating
-
-To update an instance:
-
-<pre><code>@some\_veneer\_instance.update(:with => "attributes")
-
-OR
-
-@some\_veneer\_instance.update!(:with => "attributes") # raise on error
-</code></pre>
-
-## Queries
-
-Veneer lets you query models with a simple interface.  Only simple queries are supported.
-
-You can query a single object, or multiple objects.
-
-<pre><code>Veneer(MyModel).first(:conditions => {:name => "foo"})
-
-Veneer(MyModel).all(:conditions => {:age => 18}, :limit => 5)
-</code></pre>
-
-The supported options are:
-
-* :limit
-* :offset
-* :order
-* :conditions
-
-## Limit & Offset
-
-The :limit option will limit the number of returned results.
-
-The :offset option, when set to an integer x will begin the results at the xth result.
-
-## Order
-
-Ordering should be set as an array.  By default, the order is decending.
-
-The format of the array is:
-
-<pre><code>["<field> <directon>", "<field>"]
-
-### Example
-  Veneer(MyModel).all(:order => [:name, "age desc")
-</code></pre>
-
-## Conditions
-
-Conditions are a very simple set of conditions on the fields of the model.  The for of the conditions are:
-
-<pre><code>:conditions => {:field => value}</code></pre>
-
-<pre><code>
-  Veneer(MyModel).all(:conditions => {:name => ["fred", "barney"], :age => (18..18)})
-  Veneer(MyModel).first(:conditions => {:name => "fred"})
-</code></pre>
-
-Condition fields should be ready to accept:
-
-* String
-* Range (Between clauses)
-* Array (IN clauses)
-* nil
-
-The results of a query are all wrapped as Veneer instances.
-
-## All Together
-
-<pre><code>Veneer(MyModel).all(:order => [:name, "age asc"], :limit => 5, :offset => 15, :conditions => {:name => "betty", :age => (0..18)})
 </code></pre>
 
 ## Object methods
@@ -128,7 +76,7 @@ All methods that aren't found on the adapter, are passed through to the instance
 
 ## Current Support
 
-Veneer currently has built in support for ActiveRecord and DataMapper.
+Veneer currently has built in support for ActiveRecord and DataMapper and MongoMapper.
 
 Veneer works on a VeneerInterface inner module though so you can easily impelment your adapter without requiring it to be in the veneer repo (although pull requests are welcome) (see Building Your Adapter)
 

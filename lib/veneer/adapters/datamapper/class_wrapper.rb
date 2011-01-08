@@ -6,6 +6,36 @@ module DataMapper
           ::Kernel.Veneer(klass.new(opts))
         end
 
+        def collection_associations
+          @collection_associations ||= begin
+            result = klass.relationships.inject([]) do |ary, (name, rel)|
+              if rel.max > 1
+                ary << {
+                  :name  => name,
+                  :class => rel.child_model
+                }
+              end
+              ary
+            end
+            result
+          end
+        end
+
+        def member_associations
+          @member_associations ||= begin
+            result = klass.relationships.inject([]) do |ary, (name, rel)|
+              if rel.max == 1
+                ary << {
+                  :name  => name,
+                  :class => rel.parent_model
+                }
+              end
+              ary
+            end
+            result
+          end
+        end
+
         def destroy_all
           klass.all.destroy
         end
@@ -50,8 +80,8 @@ module DataMapper
           end
 
           if raw.conditions.present?
-            raw.conditions.each do |field, value|
-              opts[field] = value if allowed_field?(field)
+            raw.conditions.each do |(field, value)|
+              opts[field.to_sym] = value if allowed_field?(field)
             end
           end
           opts
