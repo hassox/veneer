@@ -63,8 +63,23 @@ module ActiveRecord
         def find_many(opts)
           klass.find(:all,opts.to_hash.symbolize_keys)
         end
-      end # ClassWrapper
 
+        def count(opts={})
+          if opts[:conditions]
+            klass.count(:conditions => opts[:conditions])
+          else
+            klass.count
+          end
+        end
+
+        def sum(field, opts={})
+          if opts[:conditions]
+            klass.sum(field, :conditions => opts[:conditions])
+          else
+            klass.sum(field)
+          end
+        end
+      end # ClassWrapper
     end
   end
 end

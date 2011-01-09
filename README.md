@@ -75,6 +75,18 @@ Veneer(User).property_names # => [:name, :login, ...]
 # Discover loaded model classes
 Veneer.model_classes
 
+# Aggregate methods
+Veneer(User).count
+Veneer(User).count(conditional_options_same_as_all)
+
+Veneer(User).sum(:column_name)
+Veneer(User).sum(:column_name, conditional_options_same_as_all)
+
+Veneer(User).min(:column_name)
+Veneer(User).min(:column_name, conditional_options_same_as_all)
+
+Veneer(User).max(:column_name)
+Veneer(User).max(:column_name, conditional_options_same_as_all)
 </code></pre>
 
 ## Object methods

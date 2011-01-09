@@ -2,6 +2,7 @@ require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
 require 'dm-core'
 require 'dm-validations'
 require 'dm-migrations'
+require 'dm-aggregates'
 require 'veneer/adapters/datamapper'
 
 DataMapper.setup(:default, 'sqlite3::memory:')
@@ -13,6 +14,7 @@ class DMFoo
   property :name,         String
   property :title,        String
   property :description,  String
+  property :integer_field,Integer, :required => false
   property :order_field1, Integer
   property :item_id,      Integer, :required => false
 
@@ -45,7 +47,7 @@ class DataMapperVeneerTest < ::Test::Unit::TestCase
 
   def setup
     @klass              = ::DMFoo
-    @valid_attributes   = {:name => "foo", :title => "title", :description => "description"}
+    @valid_attributes   = {:name => "foo", :title => "title", :description => "description", :integer_field => 1}
     @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
   end
 
@@ -53,7 +55,7 @@ class DataMapperVeneerTest < ::Test::Unit::TestCase
     attr = @valid_attributes
 
     (1..num).each do |i|
-      DMFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}")
+      DMFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
 end

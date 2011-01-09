@@ -44,6 +44,10 @@ module MongoMapper
           klass.destroy_all
         end
 
+        def count(opts={})
+          opts[:conditions].nil? ? klass.count : klass.count(opts[:conditions])
+        end
+
         def find_first(opts)
           klass.first(opts)
         end

@@ -4,11 +4,17 @@ module Veneer
     # new
     # find_many
     # destroy_all
+    # model_classes
+    #
     #
     # Optional Methods
     # find_first
     # create!
     # create
+    # count
+    # sum
+    # max
+    # min
     #
     class ClassWrapper < BasicObject
       attr_reader :klass, :opts
@@ -106,6 +112,57 @@ module Veneer
         find_many(Hashie::Mash.new(opts)).map{|element| ::Kernel.Veneer(element)}
       end
 
+      # Obtains a count of all matching records
+      # Takes the same options as all
+      #
+      # Adapter implementers should overwrite with a more
+      # efficient implementation
+      # @see all
+      def count(opts={})
+        all(opts).size
+      end
+
+      # Obtains a sum of all matching records for the given field
+      # Takes the same options as all
+      #
+      # Adapter implementers should overwrite with a more
+      # efficient implementation
+      # @see all
+      def sum(field, opts={})
+        opts = Hashie::Mash.new(opts)
+        all(opts).inject(0){|sum, item| (item.send(field) || 0) + sum }
+      end
+
+      # Obtains the minimum value of the given field of all matching records
+      # Takes the same options as all
+      #
+      # Adapter implementers should overwrite with a more
+      # efficient implementation
+      # @see all
+      def min(field, opts={})
+        opts = Hashie::Mash.new(opts)
+        all(opts).inject(nil) do |min, item|
+          val = item.send(field)
+          min = val if !val.nil? && (min.nil? || val < min)
+          min
+        end
+      end
+
+      # Obtains the maximum value of the given field of all matching records
+      # Takes the same options as all
+      #
+      # Adapter implementers should overwrite with a more
+      # efficient implementation
+      # @see all
+      def max(field, opts={})
+        opts = Hashie::Mash.new(opts)
+        all(opts).inject(nil) do |max, item|
+          val = item.send(field)
+          max = val if !val.nil? && (max.nil? || val > max)
+          max
+        end
+      end
+
       # Should return an array or array like structure with elements matching the provided conditions hash
       # @api implementor
       # @see Veneer::Base::ClassWrapper.all
@@ -116,11 +173,6 @@ module Veneer
       def find_first(opts)
         opts[:limit] = 1
         find_many(opts).first
-      end
-
-      private
-      def method_missing(meth, *args, &blk)
-        @klass.__send__(meth, *args, &blk)
       end
     end
   end

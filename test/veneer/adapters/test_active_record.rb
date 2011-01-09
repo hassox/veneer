@@ -11,6 +11,7 @@ class CreateActiveRecordFoo < ActiveRecord::Migration
       t.string  :name
       t.string  :title
       t.string  :description
+      t.integer :integer_field
       t.integer :order_field1
       t.integer :belonger_id
     end
@@ -45,7 +46,7 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
 
   def setup
     @klass              = ::ActiveRecordFoo
-    @valid_attributes   = {:name => "foo", :title => "title", :description => "description"}
+    @valid_attributes   = {:name => "foo", :title => "title", :description => "description", :integer_field => 1}
     @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
   end
 
@@ -53,7 +54,7 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
     attr = @valid_attributes
 
     (1..num).each do |i|
-      ActiveRecordFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}")
+      ActiveRecordFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
 end

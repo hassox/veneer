@@ -202,6 +202,79 @@ module Veneer
       def test_should_list_model_classes
         assert Veneer.model_classes.size > 0
       end
+
+      #### Aggregations
+      def test_should_implement_count_without_arguments
+        create_valid_items(3)
+        assert_equal 3, Veneer(@klass).count
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_count_with_arguments
+        create_valid_items(3)
+        Veneer(@klass).create(@valid_attributes)
+        assert_equal 1, Veneer(@klass).count(:conditions => @valid_attributes)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_sum_without_arguments
+        create_valid_items(3)
+        results = Veneer(@klass).all
+        results.inject(0){ |sum, i| (i.send(:integer_field) ||0) + sum }
+        assert_equal 3, Veneer(@klass).sum(:integer_field)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_sum_with_arguments
+        create_valid_items(3)
+        Veneer(@klass).create(@valid_attributes)
+        results = Veneer(@klass).all(:conditions => @valid_attributes)
+        results.inject(0){ |sum, i| (i.send(:integer_field) ||0) + sum }
+        assert_equal 1, Veneer(@klass).sum(:integer_field, :conditions => @valid_attributes)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_min_without_arguments
+        create_valid_items(3)
+        Veneer(@klass).create(@valid_attributes.merge(:integer_field => -5))
+        results = Veneer(@klass).all
+        assert_equal -5, Veneer(@klass).min(:integer_field)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_min_with_arguments
+        create_valid_items(3)
+        attrs = @valid_attributes.merge(:integer_field => -5)
+        Veneer(@klass).create(attrs)
+        results = Veneer(@klass).all(:conditions => attrs)
+        assert_equal -5, Veneer(@klass).min(:integer_field)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_max_without_arguments
+        create_valid_items(3)
+        Veneer(@klass).create(@valid_attributes.merge(:integer_field => 99999))
+        results = Veneer(@klass).all
+        assert_equal 99999, Veneer(@klass).max(:integer_field)
+      ensure
+        _veneer_teardown
+      end
+
+      def test_should_implement_max_with_arguments
+        create_valid_items(3)
+        attrs = @valid_attributes.merge(:integer_field => 99999)
+        Veneer(@klass).create(attrs)
+        results = Veneer(@klass).all(:conditions => attrs)
+        assert_equal 99999, Veneer(@klass).max(:integer_field)
+      ensure
+        _veneer_teardown
+      end
     end
   end
 end

@@ -64,6 +64,26 @@ module ActiveRecord
           build_query(opts)
         end
 
+        def count(opts ={})
+          opts = Hashie::Mash.new(opts)
+          build_query(opts).count
+        end
+
+        def sum(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          build_query(opts).sum(field)
+        end
+
+        def max(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          build_query(opts).max(field)
+        end
+
+        def min(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          build_query(opts).min(field)
+        end
+
         private
         def build_query(opts)
           query = klass

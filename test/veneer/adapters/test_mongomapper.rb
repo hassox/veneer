@@ -13,6 +13,7 @@ class MongoFoo
   key :name,          String
   key :title,         String
   key :description,   String
+  key :integer_field, Integer
   key :order_field1,  Integer
 
   validate_on_create :check_name
@@ -34,7 +35,7 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
 
   def setup
     @klass              = ::MongoFoo
-    @valid_attributes   = {:name => "foo", :title => "title", :description => "description"}
+    @valid_attributes   = {:name => "foo", :title => "title", :description => "description", :integer_field => 1}
     @invalid_attributes = @valid_attributes.dup.merge(:name => "invalid")
   end
 
@@ -42,7 +43,7 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
     attr = @valid_attributes
 
     (1..num).each do |i|
-      MongoFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}")
+      MongoFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
 end

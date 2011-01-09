@@ -52,6 +52,25 @@ module DataMapper
           klass.all(dm_conditions_from_opts(opts))
         end
 
+        def count(opts={})
+          opts[:conditions].nil? ? klass.count : klass.count(opts[:conditions])
+        end
+
+        def sum(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          klass.all(dm_conditions_from_opts(opts)).sum(field)
+        end
+
+        def min(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          klass.all(dm_conditions_from_opts(opts)).min(field)
+        end
+
+        def max(field, opts={})
+          opts = Hashie::Mash.new(opts)
+          klass.all(dm_conditions_from_opts(opts)).max(field)
+        end
+
         private
         def order_from_string(str)
           field, direction = str.split " "
