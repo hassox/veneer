@@ -198,6 +198,10 @@ module Veneer
           Veneer(@klass).create!(@invalid_attributes)
         end
       end
+
+      def test_should_list_model_classes
+        assert Veneer.model_classes.size > 0
+      end
     end
   end
 end

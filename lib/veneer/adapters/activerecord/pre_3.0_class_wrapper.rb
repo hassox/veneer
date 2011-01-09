@@ -2,6 +2,20 @@ module ActiveRecord
   class Base
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
+        def self.except_classes
+          @@except_classes ||= [
+            "CGI::Session::ActiveRecordStore::Session",
+            "ActiveRecord::SessionStore::Session"
+          ]
+        end
+
+        def self.model_classes
+          klasses = ::ActiveRecord::Base.__send__(:subclasses)
+          klasses.select do |klass|
+            !klass.abstract_class? && !except_classes.include?(klass.name)
+          end
+        end
+
         def new(opts = {})
           ::Kernel::Veneer(klass.new(opts))
         end

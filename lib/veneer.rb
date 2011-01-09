@@ -30,5 +30,9 @@ module Veneer
     autoload :ClassWrapper,     'veneer/base/class_wrapper'
     autoload :InstanceWrapper,  'veneer/base/instance_wrapper'
   end
+
+  def self.model_classes
+    Base::ClassWrapper.subclasses.map{|adapter| adapter.model_classes }.flatten.compact
+  end
 end
 

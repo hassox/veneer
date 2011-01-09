@@ -16,6 +16,18 @@ module Veneer
         @klass, @opts = klass, opts
       end
 
+      def self.inherited(klass)
+        subclasses << klass
+      end
+
+      def self.subclasses
+        @subclasses ||= []
+      end
+
+      def self.model_classes
+        raise ::Veneer::Errors::NotImplemented
+      end
+
       # Provides an array of associations of the format
       # [
       #   {

@@ -2,6 +2,10 @@ module DataMapper
   module Resource
     module VeneerInterface
       class ClassWrapper < ::Veneer::Base::ClassWrapper
+        def self.model_classes
+          DataMapper::Model.descendants
+        end
+
         def new(opts = {})
           ::Kernel.Veneer(klass.new(opts))
         end
