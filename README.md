@@ -68,7 +68,7 @@ Veneer(User).member_associations # grabs singular associations like belongs_to a
 # ====> results in
 [ { :name => "asociaiton_name", :class => AssociationClass }]
 
-# Find property names
+# Find property names (NOT YET IMPLEMENTED. PATCHES WELCOME)
 
 Veneer(User).property_names # => [:name, :login, ...]
 
