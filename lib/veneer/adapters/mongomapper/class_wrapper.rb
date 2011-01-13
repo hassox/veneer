@@ -3,7 +3,7 @@ module MongoMapper
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
         def self.model_classes
-          MongoMapper::Document.descendants
+          ::MongoMapper::Document.descendants
         end
 
         def new(opts = {})

@@ -1,6 +1,11 @@
-require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
+require File.expand_path(File.join(File.dirname(__FILE__), '..', "..", "test_helper"))
 
-require 'activerecord'
+begin
+  require 'active_record'
+rescue LoadError
+  require 'activerecord'
+end
+
 require 'veneer/adapters/activerecord'
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 

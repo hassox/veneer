@@ -61,36 +61,36 @@ module ActiveRecord
         end
 
         def find_many(opts)
-          build_query(opts)
+          build_query(opts).all
         end
 
         def count(opts ={})
-          opts = Hashie::Mash.new(opts)
+          opts = ::Hashie::Mash.new(opts)
           build_query(opts).count
         end
 
         def sum(field, opts={})
-          opts = Hashie::Mash.new(opts)
+          opts = ::Hashie::Mash.new(opts)
           build_query(opts).sum(field)
         end
 
         def max(field, opts={})
-          opts = Hashie::Mash.new(opts)
-          build_query(opts).max(field)
+          opts = ::Hashie::Mash.new(opts)
+          build_query(opts).maximum(field)
         end
 
         def min(field, opts={})
-          opts = Hashie::Mash.new(opts)
-          build_query(opts).min(field)
+          opts = ::Hashie::Mash.new(opts)
+          build_query(opts).minimum(field)
         end
 
         private
         def build_query(opts)
           query = klass
-          query.where(opts.conditions) if opts.conditions.present?
-          query.limit(opts.limit)      if opts.limit?
-          query.offset(opts.offset)    if opts.offset?
-          query.order(opts.order)      if opts.order?
+          query = query.where(opts.conditions.to_hash) if opts.conditions.present?
+          query = query.limit(opts.limit.to_i)         if opts.limit?
+          query = query.offset(opts.offset.to_i)       if opts.offset?
+          query = query.order(opts.order)              if opts.order?
           query
         end
       end # ClassWrapper

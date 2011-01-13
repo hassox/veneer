@@ -109,7 +109,7 @@ module Veneer
       #
       # @api public
       def all(opts={})
-        find_many(Hashie::Mash.new(opts)).map{|element| ::Kernel.Veneer(element)}
+        find_many(::Hashie::Mash.new(opts))
       end
 
       # Obtains a count of all matching records
@@ -129,7 +129,7 @@ module Veneer
       # efficient implementation
       # @see all
       def sum(field, opts={})
-        opts = Hashie::Mash.new(opts)
+        opts = ::Hashie::Mash.new(opts)
         all(opts).inject(0){|sum, item| (item.send(field) || 0) + sum }
       end
 
@@ -140,7 +140,7 @@ module Veneer
       # efficient implementation
       # @see all
       def min(field, opts={})
-        opts = Hashie::Mash.new(opts)
+        opts = ::Hashie::Mash.new(opts)
         all(opts).inject(nil) do |min, item|
           val = item.send(field)
           min = val if !val.nil? && (min.nil? || val < min)
@@ -155,7 +155,7 @@ module Veneer
       # efficient implementation
       # @see all
       def max(field, opts={})
-        opts = Hashie::Mash.new(opts)
+        opts = ::Hashie::Mash.new(opts)
         all(opts).inject(nil) do |max, item|
           val = item.send(field)
           max = val if !val.nil? && (max.nil? || val > max)

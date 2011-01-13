@@ -3,7 +3,7 @@ module DataMapper
     module VeneerInterface
       class ClassWrapper < ::Veneer::Base::ClassWrapper
         def self.model_classes
-          DataMapper::Model.descendants
+          ::DataMapper::Model.descendants
         end
 
         def new(opts = {})
@@ -49,7 +49,7 @@ module DataMapper
         end
 
         def find_many(opts)
-          klass.all(dm_conditions_from_opts(opts))
+          klass.all(dm_conditions_from_opts(opts)).to_a
         end
 
         def count(opts={})
@@ -57,17 +57,17 @@ module DataMapper
         end
 
         def sum(field, opts={})
-          opts = Hashie::Mash.new(opts)
+          opts = ::Hashie::Mash.new(opts)
           klass.all(dm_conditions_from_opts(opts)).sum(field)
         end
 
         def min(field, opts={})
-          opts = Hashie::Mash.new(opts)
+          opts = ::Hashie::Mash.new(opts)
           klass.all(dm_conditions_from_opts(opts)).min(field)
         end
 
         def max(field, opts={})
-          opts = Hashie::Mash.new(opts)
+          opts = ::Hashie::Mash.new(opts)
           klass.all(dm_conditions_from_opts(opts)).max(field)
         end
 
@@ -91,13 +91,13 @@ module DataMapper
 
           if raw.order.present?
             opts[:order] = case raw.order
-            when Array
+            when ::Array
               raw.order.inject([]) do |ary, str|
                 ary << order_from_string(str)
               end.compact
-            when String
+            when ::String
               order_from_string(raw.order)
-            when Symbol
+            when ::Symbol
               raw.order
             end
           end

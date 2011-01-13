@@ -125,10 +125,9 @@ module Veneer
 
       def test_should_implement_order_with_desc
         create_valid_items(4)
-        key = @valid_attributes.keys.first
-        ordered_result = Veneer(@klass).all(:order => "#{key} desc")
+        ordered_result = Veneer(@klass).all(:order => "name desc")
         result = Veneer(@klass).all
-        result = result.sort_by{ |i| i.send(key) }.reverse
+        result = result.sort_by{ |i| i.name }.reverse
         assert_equal ordered_result, result
       ensure
         _veneer_teardown
@@ -242,7 +241,7 @@ module Veneer
         create_valid_items(3)
         Veneer(@klass).create(@valid_attributes.merge(:integer_field => -5))
         results = Veneer(@klass).all
-        assert_equal -5, Veneer(@klass).min(:integer_field)
+        assert_equal(-5, Veneer(@klass).min(:integer_field))
       ensure
         _veneer_teardown
       end
@@ -252,7 +251,7 @@ module Veneer
         attrs = @valid_attributes.merge(:integer_field => -5)
         Veneer(@klass).create(attrs)
         results = Veneer(@klass).all(:conditions => attrs)
-        assert_equal -5, Veneer(@klass).min(:integer_field)
+        assert_equal(-5, Veneer(@klass).min(:integer_field))
       ensure
         _veneer_teardown
       end

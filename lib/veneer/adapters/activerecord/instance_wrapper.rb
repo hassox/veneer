@@ -7,9 +7,11 @@ module ActiveRecord
         end
 
         def save!
-          instance.save ?
-            true :
+          if instance.save
+            true
+          else
             raise ::Veneer::Errors::NotSaved
+          end
         end
       end # InstanceWrapper
     end # VeneerInterface
