@@ -11,17 +11,17 @@ class DMFoo
   include DataMapper::Resource
 
   property :id,           Serial
-  property :name,         String
-  property :title,        String
-  property :description,  String
+  property :name,         String, :length => 255
+  property :title,        String, :length => 255
+  property :description,  String, :length => 255
   property :integer_field,Integer, :required => false
   property :order_field1, Integer
-  property :item_id,      Integer, :required => false
+  property :belonger_id,  Integer, :required => false
 
   validates_with_method :name, :method => :check_name
 
-  has n,      :items,  :model => "DMFoo", :child_key => [:item_id]
-  belongs_to  :master, :model => "DMFoo", :child_key => [:item_id]
+  has n,      :items,  :model => "DMFoo", :child_key => [:belonger_id]
+  belongs_to  :master, :model => "DMFoo", :child_key => [:belonger_id]
 
   def check_name
     if name == "invalid"
