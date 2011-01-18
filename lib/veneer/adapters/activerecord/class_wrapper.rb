@@ -52,6 +52,18 @@ module ActiveRecord
           end
         end
 
+        def properties
+          @properties ||= begin
+            klass.columns.map do |property|
+              {
+                :name => property.name,
+                :type => property.primary ? :serial : property.type,
+                :length => property.limit,
+              }
+            end
+          end
+        end
+
         def destroy_all
           klass.destroy_all
         end

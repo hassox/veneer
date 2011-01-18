@@ -170,6 +170,17 @@ module Veneer
         assert_not_nil hash[:name]
         assert_not_nil hash[:class]
       end
+
+      def test_properties
+        result = Veneer(@klass).properties
+        assert result.kind_of?(Array)
+        assert result.size > 0
+        hash = result.first
+        assert hash.kind_of?(Hash)
+        assert_not_nil hash[:name]
+        assert_not_nil hash[:type]
+        assert hash.has_key?(:length)
+      end
     end
 
     module InstanceWrapperLint
