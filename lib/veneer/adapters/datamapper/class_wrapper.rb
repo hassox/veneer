@@ -39,18 +39,6 @@ module DataMapper
             result
           end
         end
-        
-        def properties
-          klass.properties.map do |property|
-            ::Kernel.puts property.options.inspect
-            ::Veneer::Base::Property.new(
-              :name => property.name.to_s,
-              :type => property.primitive.name.downcase.to_sym,
-              :length => property.options[:length],
-              :nullable => property.allow_nil?
-            )
-          end
-        end
 
         def destroy_all
           klass.all.destroy

@@ -170,56 +170,6 @@ module Veneer
         assert_not_nil hash[:name]
         assert_not_nil hash[:class]
       end
-      
-      def test_properties
-        result = Veneer(@klass).properties
-        
-        id = Veneer::Base::Property.new(
-          :name => "id",
-          :type => :integer,
-          :length => nil,
-          :nullable => false
-        )
-        name = Veneer::Base::Property.new(
-          :name => "name",
-          :type => :string,
-          :length => 255,
-          :nullable => true
-        )
-        title = Veneer::Base::Property.new(
-          :name => "title",
-          :type => :string,
-          :length => 255,
-          :nullable => true
-        )
-        description = Veneer::Base::Property.new(
-          :name => "description",
-          :type => :string,
-          :length => 255,
-          :nullable => true
-        )
-        integer_field = Veneer::Base::Property.new(
-          :name => "integer_field",
-          :type => :integer,
-          :length => nil,
-          :nullable => true
-        )
-        order_field1 = Veneer::Base::Property.new(
-          :name => "order_field1",
-          :type => :integer,
-          :length => nil,
-          :nullable => true
-        )
-        belonger_id = Veneer::Base::Property.new(
-          :name => "belonger_id",
-          :type => :integer,
-          :length => nil,
-          :nullable => true
-        )
-
-        expected = [id, name, title, description, integer_field, order_field1, belonger_id]
-        assert_equal(expected, result)
-      end
     end
 
     module InstanceWrapperLint

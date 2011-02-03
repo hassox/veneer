@@ -51,17 +51,6 @@ module ActiveRecord
             end
           end
         end
-        
-        def properties
-          klass.columns.map do |column|
-            ::Veneer::Base::Property.new(
-              :name => column.name,
-              :type => column.type,
-              :length => column.limit,
-              :nullable => column.null
-            )
-          end
-        end
 
         def destroy_all
           klass.destroy_all
