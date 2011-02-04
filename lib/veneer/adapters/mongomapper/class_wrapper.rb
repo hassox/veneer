@@ -44,7 +44,7 @@ module MongoMapper
           @properties ||= begin
             klass.keys.map do |property|
               {
-                :name => property[1].name,
+                :name => property[1].name.to_sym,
                 :type => mm_property_type(property[1].type),
                 :length => property[1].options[:length],
               }
