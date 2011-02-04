@@ -286,7 +286,16 @@ module Veneer
         assert hash.kind_of?(Hash)
         assert_not_nil hash[:name]
         assert_not_nil hash[:type]
+        assert_kind_of Symbol, hash[:name]
         assert hash.has_key?(:length)
+      end
+      
+      def test_types_conversion
+        assert_equal Integer, property_by_name(primary_key_name)[:type]
+      end
+      
+      def property_by_name(name)
+        Veneer(@klass).properties.find { |prop| prop[:name] == name } or raise "Couldn't find property #{name}"
       end
     end
   end

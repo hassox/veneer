@@ -56,8 +56,8 @@ module ActiveRecord
           @properties ||= begin
             klass.columns.map do |property|
               {
-                :name => property.name,
-                :type => property.primary ? :serial : property.type,
+                :name => property.name.to_sym,
+                :type => ::ActiveRecord::Base::VeneerInterface::ClassWrapper::Types.normalize(property.type),
                 :length => property.limit,
               }
             end
