@@ -3,12 +3,12 @@ module ActiveRecord
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
         class Types
-          def self.normalize(type_name)
-            case type_name
+          def self.normalize(type)
+            case type
             when :serial, :integer
               Integer
             else
-              type_name
+              type
             end
           end
         end
