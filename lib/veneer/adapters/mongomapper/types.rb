@@ -5,7 +5,7 @@ module MongoMapper
         class Types
           def self.normalize(type)
             case type
-              when ::MongoMapper::Extensions::ObjectId then String
+              when MongoMapper::Extensions::ObjectId then String
               else type
             end
           end
