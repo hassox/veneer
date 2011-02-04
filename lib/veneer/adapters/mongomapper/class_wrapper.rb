@@ -45,7 +45,7 @@ module MongoMapper
             klass.keys.map do |property|
               {
                 :name => property[1].name.to_sym,
-                :type => mm_property_type(property[1].type),
+                :type => ::MongoMapper::Document::VeneerInterface::ClassWrapper::Types.normalize(property[1].type),
                 :length => property[1].options[:length],
               }
             end
@@ -66,25 +66,6 @@ module MongoMapper
 
         def find_many(opts)
           klass.all(opts)
-        end
-
-        private
-        def mm_property_type(property)
-          case property
-            when ::MongoMapper::Extensions::Array then :serialized
-            when ::MongoMapper::Extensions::Binary then :binary
-            when ::MongoMapper::Extensions::Boolean then :boolean
-            when ::MongoMapper::Extensions::Date then :date
-            when ::MongoMapper::Extensions::Float then :float
-            when ::MongoMapper::Extensions::Hash then :serialized
-            when ::MongoMapper::Extensions::Integer then :integer
-            when ::MongoMapper::Extensions::NilClass then :serialized
-            when ::MongoMapper::Extensions::Object then :serialized
-            when ::MongoMapper::Extensions::ObjectId then :serial
-            when ::MongoMapper::Extensions::Set then :serialized
-            when ::MongoMapper::Extensions::String then :string
-            when ::MongoMapper::Extensions::Time then :time
-          end
         end
       end
     end

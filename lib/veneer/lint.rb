@@ -291,7 +291,7 @@ module Veneer
       end
       
       def test_types_conversion
-        assert_equal Integer, property_by_name(primary_key_name)[:type]
+        assert_equal primary_key_type, property_by_name(primary_key_name)[:type]
       end
       
       def property_by_name(name)

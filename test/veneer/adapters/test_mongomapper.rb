@@ -46,6 +46,14 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
       MongoFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
+  
+  def primary_key_name
+    :_id
+  end
+  
+  def primary_key_type
+    String
+  end
 end
 
 

@@ -66,5 +66,9 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
   def primary_key_name
     :id
   end
+  
+  def primary_key_type
+    Integer
+  end
 end
 
