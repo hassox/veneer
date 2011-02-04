@@ -58,5 +58,9 @@ class DataMapperVeneerTest < ::Test::Unit::TestCase
       DMFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
+  
+  def primary_key_name
+    :id
+  end
 end
 

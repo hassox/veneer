@@ -45,7 +45,7 @@ module DataMapper
             klass.properties.map do |property|
               {
                 :name => property.name,
-                :type => dm_property_type(property),
+                :type => ::DataMapper::Resource::VeneerInterface::ClassWrapper::Types.normalize(property),
                 :length => property.options[:length],
               }
             end
@@ -120,27 +120,6 @@ module DataMapper
             end
           end
           opts
-        end
-
-        def dm_property_type(property)
-          case property
-            when ::DataMapper::Property::Binary then :binary
-            when ::DataMapper::Property::Boolean then :boolean
-            when ::DataMapper::Property::Class then :string
-            when ::DataMapper::Property::Date then :date
-            when ::DataMapper::Property::DateTime then :datetime
-            when ::DataMapper::Property::Decimal then :datetime
-            when ::DataMapper::Property::Discriminator then :string
-            when ::DataMapper::Property::Float then :float
-            when ::DataMapper::Property::Integer then :integer
-            when ::DataMapper::Property::Numeric then :float
-            when ::DataMapper::Property::Object then :text
-            when ::DataMapper::Property::Serial then :serial
-            when ::DataMapper::Property::String then :string
-            when ::DataMapper::Property::Text then :text
-            when ::DataMapper::Property::Time then :time
-            else :text
-          end
         end
       end
     end
