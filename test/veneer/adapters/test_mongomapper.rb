@@ -15,6 +15,14 @@ class MongoFoo
   key :description,   String
   key :integer_field, Integer
   key :order_field1,  Integer
+  key :float_field,   Float
+  key :date_field,    Date
+  key :boolean_field, Boolean
+  key :hash_field,    Hash
+  key :set_field,     Set
+  key :time_field,    Time
+  key :object_field,  Object
+  key :binary_field,  Binary
 
   validate_on_create :check_name
 
@@ -49,11 +57,17 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
   
   def properties_mappings
     {
-      :_id => String #ObjectID
+      :_id => String, #ObjectID
+      :name => String,
+      :integer_field => Integer,
+      :float_field => Float,
+      :date_field => Date,
+      :boolean_field => TrueClass, 
+      :hash_field => Hash,
+      :set_field => Set,
+      :time_field => Time,
+      :object_field => Object,
+      :binary_field => StringIO
     }
   end
 end
-
-
-
-
