@@ -17,7 +17,16 @@ class DMFoo
   property :integer_field,Integer, :required => false
   property :order_field1, Integer
   property :item_id,      Integer, :required => false
-
+  property :text_field,   Text
+  property :float_field,  Float
+  property :decimal_field,Decimal
+  property :datetime_field,DateTime
+  property :time_field,   Time
+  property :date_field,   Date
+  property :boolean_field,Boolean
+  property :object_field, Object
+  property :discriminator_field, Discriminator
+  
   validates_with_method :name, :method => :check_name
 
   has n,      :items,  :model => "DMFoo", :child_key => [:item_id]
@@ -61,7 +70,18 @@ class DataMapperVeneerTest < ::Test::Unit::TestCase
   
   def properties_mappings
     {
-      :id => Integer
+      :id => Integer, #Serial,             
+      :title => String,
+      :text_field => String,
+      :integer_field => Integer,
+      :float_field => Float,
+      :decimal_field => BigDecimal,
+      :datetime_field => DateTime,
+      :time_field => Time,
+      :date_field => Date,
+      :boolean_field => TrueClass,
+      :object_field => Object,
+      :discriminator_field => Class
     }
   end
 end
