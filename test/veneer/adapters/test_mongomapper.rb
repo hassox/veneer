@@ -47,12 +47,10 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
     end
   end
   
-  def primary_key_name
-    :_id
-  end
-  
-  def primary_key_type
-    String
+  def properties_mappings
+    {
+      :_id => String #ObjectID
+    }
   end
 end
 

@@ -63,12 +63,10 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
     end
   end
   
-  def primary_key_name
-    :id
-  end
-  
-  def primary_key_type
-    Integer
+  def properties_mappings
+    {
+      :id => Integer
+    }
   end
 end
 

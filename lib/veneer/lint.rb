@@ -291,7 +291,10 @@ module Veneer
       end
       
       def test_types_conversion
-        assert_equal primary_key_type, property_by_name(primary_key_name)[:type]
+        # assert_equal primary_key_type, property_by_name(primary_key_name)[:type]
+        properties_mappings.each do |name, expected_normalized_type|
+          assert_equal expected_normalized_type, property_by_name(name)[:type]
+        end
       end
       
       def property_by_name(name)
