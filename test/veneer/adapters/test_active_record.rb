@@ -19,6 +19,16 @@ class CreateActiveRecordFoo < ActiveRecord::Migration
       t.integer :integer_field
       t.integer :order_field1
       t.integer :belonger_id
+      t.text    :text_field
+      t.float   :float_field
+      t.decimal :decimal_field
+      t.datetime :datetime_field
+      t.timestamp :timestamp_field
+      t.time      :time_field
+      t.datetime :datetime_field
+      t.date    :date_field
+      t.binary  :binary_field
+      t.boolean :boolean_field
     end
   end
 
@@ -65,7 +75,18 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
   
   def properties_mappings
     {
-      :id => Integer
+      :id => Integer,
+      :title => String,
+      :text_field => String,
+      :integer_field => Integer,
+      :float_field => Float,
+      :decimal_field => BigDecimal,
+      :datetime_field => DateTime,
+      :timestamp_field => DateTime,
+      :time_field => Time,
+      :date_field => Date,
+      :binary_field => StringIO,
+      :boolean_field => TrueClass
     }
   end
 end
