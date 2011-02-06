@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
+require File.expand_path(File.join(File.dirname(__FILE__), '..', "..", "test_helper"))
 require 'dm-core'
 require 'dm-validations'
 require 'dm-migrations'
@@ -51,8 +51,8 @@ end
 
 DataMapper.auto_migrate!
 
-class DataMapperVeneerTest < ::Test::Unit::TestCase
-  include Veneer::Lint
+class DataMapperAdapterTest < ::Test::Unit::TestCase
+  include Veneer::Lint::Adapter
 
   def setup
     @klass              = ::DMFoo
@@ -66,23 +66,6 @@ class DataMapperVeneerTest < ::Test::Unit::TestCase
     (1..num).each do |i|
       DMFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
-  end
-  
-  def properties_mappings
-    {
-      :id => Integer, #Serial,             
-      :title => String,
-      :text_field => String,
-      :integer_field => Integer,
-      :float_field => Float,
-      :decimal_field => BigDecimal,
-      :datetime_field => DateTime,
-      :time_field => Time,
-      :date_field => Date,
-      :boolean_field => TrueClass,
-      :object_field => Object,
-      :discriminator_field => Class
-    }
-  end
+  end  
 end
 

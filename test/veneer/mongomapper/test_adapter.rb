@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
+require File.expand_path(File.join(File.dirname(__FILE__), '..', "..", "test_helper"))
 require 'mongo_mapper'
 
 require 'veneer/adapters/mongomapper'
@@ -38,8 +38,8 @@ class MongoFoo
   end
 end
 
-class MongoMapperVeneerTest < ::Test::Unit::TestCase
-  include Veneer::Lint
+class MongoMapperAdapterTest < ::Test::Unit::TestCase
+  include Veneer::Lint::Adapter
 
   def setup
     @klass              = ::MongoFoo

@@ -7,7 +7,13 @@ rescue LoadError
 end
 
 require 'veneer/adapters/activerecord'
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+
+
+# Each time you call establish_connection, ActiveRecord recreates the database
+# and destroys tables for other tests
+unless ActiveRecord::Base.connected?
+  ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:") 
+end
 
 class CreateActiveRecordFoo < ActiveRecord::Migration
 
@@ -56,8 +62,8 @@ class ActiveRecordFoo < ActiveRecord::Base
   end
 end
 
-class ActiveRecordVeneerTest < ::Test::Unit::TestCase
-  include Veneer::Lint
+class ActiveRecordAdapterTest < ::Test::Unit::TestCase
+  include Veneer::Lint::Adapter
 
   def setup
     @klass              = ::ActiveRecordFoo
@@ -71,23 +77,6 @@ class ActiveRecordVeneerTest < ::Test::Unit::TestCase
     (1..num).each do |i|
       ActiveRecordFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
-  end
-  
-  def properties_mappings
-    {
-      :id => Integer,
-      :title => String,
-      :text_field => String,
-      :integer_field => Integer,
-      :float_field => Float,
-      :decimal_field => BigDecimal,
-      :datetime_field => DateTime,
-      :timestamp_field => DateTime,
-      :time_field => Time,
-      :date_field => Date,
-      :binary_field => StringIO,
-      :boolean_field => TrueClass
-    }
   end
 end
 

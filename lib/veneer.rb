@@ -24,7 +24,7 @@ module Veneer
   autoload :Errors,       'veneer/errors'
   autoload :Proxy,        'veneer/proxy'
   autoload :Conditional,  'veneer/base/conditional'
-  autoload :Lint,         'veneer/lint'
+
 
   module Base
     autoload :ClassWrapper,     'veneer/base/class_wrapper'
