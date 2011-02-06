@@ -10,21 +10,21 @@ DataMapper.setup(:default, 'sqlite3::memory:')
 class DMFoo
   include DataMapper::Resource
 
-  property :id,           Serial
-  property :name,         String
-  property :title,        String
-  property :description,  String
-  property :integer_field,Integer, :required => false
-  property :order_field1, Integer
-  property :item_id,      Integer, :required => false
-  property :text_field,   Text
-  property :float_field,  Float
-  property :decimal_field,Decimal
-  property :datetime_field,DateTime
-  property :time_field,   Time
-  property :date_field,   Date
-  property :boolean_field,Boolean
-  property :object_field, Object
+  property :id,                  Serial
+  property :name,                String
+  property :title,               String
+  property :description,         String
+  property :integer_field,       Integer, :required => false
+  property :order_field1,        Integer
+  property :item_id,             Integer, :required => false
+  property :text_field,          Text
+  property :float_field,         Float
+  property :decimal_field,       Decimal
+  property :datetime_field,      DateTime
+  property :time_field,          Time
+  property :date_field,          Date
+  property :boolean_field,       Boolean
+  property :object_field,        Object
   property :discriminator_field, Discriminator
   
   validates_with_method :name, :method => :check_name
