@@ -9,11 +9,7 @@ end
 require 'veneer/adapters/activerecord'
 
 
-# Each time you call establish_connection, ActiveRecord recreates the database
-# and destroys tables for other tests
-unless ActiveRecord::Base.connected?
-  ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:") 
-end
+Veneer::Test::ActiveRecordConnection.establish
 
 class CreateActiveRecordFoo < ActiveRecord::Migration
 
