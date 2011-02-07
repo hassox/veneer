@@ -1,11 +1,12 @@
 module Veneer
   module Lint
     module Adapter
+      include Veneer::Lint::Base
+      
       def self.included(base)
         base.class_eval do
           include ::Veneer::Lint::Adapter::ClassWrapperLint
           include ::Veneer::Lint::Adapter::InstanceWrapperLint
-          # include ::Veneer::Lint::PropertiesLint
         end
       end
 
@@ -25,8 +26,7 @@ module Veneer
         end
 
         def test_should_setup_the_veneer_lint_class_wrapper_with_a_klass
-          assert_not_nil @klass, "@klass should provide a class to test Veneer with"
-          assert_kind_of Class, @klass
+          super
         ensure
           _veneer_teardown
         end
