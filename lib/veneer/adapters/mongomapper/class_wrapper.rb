@@ -45,10 +45,13 @@ module MongoMapper
         def properties
           @properties ||= begin
             klass.keys.map do |property|
+              property = property[1]
+              name = property.name.to_sym
               {
-                :name => property[1].name.to_sym,
-                :type => ::MongoMapper::Document::VeneerInterface::ClassWrapper::Types.normalize(property[1].type),
-                :length => property[1].options[:length],
+                :name => name,
+                :type => ::MongoMapper::Document::VeneerInterface::ClassWrapper::Types.normalize(property.type),
+                :length => property.options[:length],
+                :primary? => primary_keys.include?(name)
               }
             end
           end

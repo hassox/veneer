@@ -30,9 +30,19 @@ module Veneer
       end
       
       def test_primary_keys
-        assert_equal @primary_keys, Veneer(@klass).primary_keys
+        wrapped = Veneer(@klass)
+        properties = wrapped.properties
+        primary_keys = wrapped.primary_keys
+        
+        assert_equal @primary_keys, wrapped.primary_keys
+
+
+        desired_primary_keys = properties.select { |property| primary_keys.include? property[:name] }
+        assert_equal primary_keys.size, desired_primary_keys.size
+        
+        desired_primary_keys.each { |key| assert key[:primary?], "Every primary key should have key[:primary?] equal true" }
       end
-    
+      
       def test_types_conversion
         @properties_mapping.each do |name, expected_normalized_type|
           assert_equal expected_normalized_type, property_by_name(name)[:type]

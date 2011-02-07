@@ -47,6 +47,7 @@ module DataMapper
                 :name => property.name,
                 :type => ::DataMapper::Resource::VeneerInterface::ClassWrapper::Types.normalize(property),
                 :length => property.options[:length],
+                :primary? => primary_keys.include?(property.name)
               }
             end
           end
