@@ -12,6 +12,11 @@ module Veneer
         end
       end
       
+      def test_should_setup_expected_primary_keys
+        assert_not_nil @primary_keys
+        assert_kind_of Array, @primary_keys
+      end
+      
       def test_properties
         result = Veneer(@klass).properties
         assert result.kind_of?(Array)
@@ -22,6 +27,10 @@ module Veneer
         assert_not_nil hash[:type]
         assert_kind_of Symbol, hash[:name]
         assert hash.has_key?(:length)
+      end
+      
+      def test_primary_keys
+        assert_equal @primary_keys, Veneer(@klass).primary_keys
       end
     
       def test_types_conversion

@@ -2,6 +2,8 @@ module MongoMapper
   module Document
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
+        PRIMARY_KEYS = [:_id]
+        
         def self.model_classes
           ::MongoMapper::Document.descendants
         end
@@ -50,6 +52,10 @@ module MongoMapper
               }
             end
           end
+        end
+        
+        def primary_keys
+          ::MongoMapper::Document::VeneerInterface::ClassWrapper::PRIMARY_KEYS
         end
 
         def destroy_all

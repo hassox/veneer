@@ -44,5 +44,6 @@ class DataMapperPropertiesTest < ::Test::Unit::TestCase
       :object_field => Object,
       :discriminator_field => Class
     }
+    @primary_keys = [:id, :another_id]
   end
 end

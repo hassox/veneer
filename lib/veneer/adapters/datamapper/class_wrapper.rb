@@ -51,6 +51,10 @@ module DataMapper
             end
           end
         end
+        
+        def primary_keys
+          @primary_keys ||= klass.key.map { |key| key.name }
+        end
 
         def destroy_all
           klass.all.destroy

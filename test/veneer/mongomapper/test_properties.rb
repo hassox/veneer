@@ -41,5 +41,6 @@ class MongoMapperPropertiesTest < ::Test::Unit::TestCase
       :object_field => Object,
       :binary_field => StringIO
     }
+    @primary_keys = [:_id]
   end
 end
