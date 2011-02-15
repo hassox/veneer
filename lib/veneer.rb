@@ -29,6 +29,7 @@ module Veneer
   module Base
     autoload :ClassWrapper,     'veneer/base/class_wrapper'
     autoload :InstanceWrapper,  'veneer/base/instance_wrapper'
+    autoload :Property,  'veneer/base/property'
   end
 
   def self.model_classes

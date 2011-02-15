@@ -21,12 +21,13 @@ module Veneer
         result = Veneer(@klass).properties
         assert result.kind_of?(Array)
         assert result.size > 0
-        hash = result.first
-        assert hash.kind_of?(Hash)
-        assert_not_nil hash[:name]
-        assert_not_nil hash[:type]
-        assert_kind_of Symbol, hash[:name]
-        assert hash.has_key?(:length)
+        property = result.first
+        assert_kind_of Veneer::Base::Property, property
+        # assert_not_nil hash.name
+        assert_kind_of Class, property.type
+        assert_kind_of Symbol, property.name
+        assert_not_nil property.primary?
+        # assert hash.has_key?(:length)
       end
       
       def test_primary_keys
@@ -37,10 +38,10 @@ module Veneer
         assert_equal @primary_keys, wrapped.primary_keys
 
 
-        desired_primary_keys = properties.select { |property| primary_keys.include? property[:name] }
+        desired_primary_keys = properties.select { |property| primary_keys.include? property.name }
         assert_equal primary_keys.size, desired_primary_keys.size
         
-        desired_primary_keys.each { |key| assert key[:primary?], "Every primary key should have key[:primary?] equal true" }
+        desired_primary_keys.each { |key| assert key.primary?, "Every primary key should have key[:primary?] equal true" }
       end
       
       def test_types_conversion

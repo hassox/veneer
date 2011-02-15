@@ -55,11 +55,11 @@ module ActiveRecord
         def properties
           @properties ||= begin
             klass.columns.map do |property|
-              {
+              ::Veneer::Base::Property.new(
                 :name => property.name.to_sym,
                 :type => ::ActiveRecord::Base::VeneerInterface::ClassWrapper::Types.normalize(property.type),
                 :length => property.limit,
-              }
+              )
             end
           end
         end

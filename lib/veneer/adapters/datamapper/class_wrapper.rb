@@ -43,12 +43,12 @@ module DataMapper
         def properties
           @properties ||= begin
             klass.properties.map do |property|
-              {
+              ::Veneer::Base::Property.new(
                 :name => property.name,
                 :type => ::DataMapper::Resource::VeneerInterface::ClassWrapper::Types.normalize(property),
                 :length => property.options[:length],
-                :primary? => primary_keys.include?(property.name)
-              }
+                :primary => primary_keys.include?(property.name)
+              )
             end
           end
         end
