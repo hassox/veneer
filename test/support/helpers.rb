@@ -85,7 +85,7 @@ module Veneer
               t.integer   :integer_field
               t.text      :text_field
               t.float     :float_field
-              t.decimal   :decimal_field
+              t.decimal   :decimal_field, :precision => 5, :scale => 2
               t.datetime  :datetime_field
               t.timestamp :timestamp_field
               t.time      :time_field
