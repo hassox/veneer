@@ -76,8 +76,10 @@ module ActiveRecord
                                  }.map { |index| 
                                    index["Column_name"].to_sym 
                                  }
-          elsif ::ActiveRecord::ConnectionAdapters.const_defined?(:SqliteAdapter) &&
-                ::ActiveRecord::Base.connection.is_a?(::ActiveRecord::ConnectionAdapters::SqliteAdapter)
+          elsif ::ActiveRecord::ConnectionAdapters.const_defined?(:SQLiteAdapter) &&
+                ::ActiveRecord::Base.connection.is_a?(::ActiveRecord::ConnectionAdapters::SQLiteAdapter) ||
+                ::ActiveRecord::ConnectionAdapters.const_defined?(:SQLite3Adapter) &&
+                ::ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLite3Adapter)
                   klass.connection.send(:table_structure, klass.table_name).select { |field|
                     field['pk'].to_i == 1
                   }.map { |field| field['name'].to_sym }
