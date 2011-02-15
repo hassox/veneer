@@ -55,13 +55,21 @@ module ActiveRecord
         def properties
           @properties ||= begin
             klass.columns.map do |property|
+              name = property.name.to_sym
               ::Veneer::Base::Property.new(
-                :name => property.name.to_sym,
+                :name => name,
                 :type => ::ActiveRecord::Base::VeneerInterface::ClassWrapper::Types.normalize(property.type),
                 :length => property.limit,
+                :primary => primary_keys.include?(name)
               )
             end
           end
+        end
+        
+        def primary_keys
+          @primary_keys ||= klass.connection.send(:table_structure, klass.table_name).select { |field|
+            field['pk'].to_i == 1
+          }.map { |field| field['name'].to_sym }
         end
 
         def destroy_all
