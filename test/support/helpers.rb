@@ -49,6 +49,9 @@ module Veneer
       module Migrations
         module SQLite
           def up
+            # Need raw SQL here. ActiveRecord doesn't allow to specify composite primary 
+            # keys in migration and SQLite does not allow to specify them once table is created.
+            
             execute <<-SQL
               CREATE TABLE "active_record_bars" (
                 "id" INTEGER NOT NULL, 
@@ -91,7 +94,8 @@ module Veneer
               t.binary    :binary_field
               t.boolean   :boolean_field
             end
-            execute "alter table active_record_foos drop primary key, add primary key (id, name);"
+            # Need to specify composite primary key.
+            execute "alter table active_record_bars drop primary key, add primary key (id, name);"
           end
           
           def down

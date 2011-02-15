@@ -67,9 +67,21 @@ module ActiveRecord
         end
         
         def primary_keys
-          @primary_keys ||= klass.connection.send(:table_structure, klass.table_name).select { |field|
-            field['pk'].to_i == 1
-          }.map { |field| field['name'].to_sym }
+          @primary_keys ||= if ::ActiveRecord::ConnectionAdapters.const_defined?(:MysqlAdapter) && 
+                               ::ActiveRecord::Base.connection.is_a?(::ActiveRecord::ConnectionAdapters::MysqlAdapter) ||
+                               ::ActiveRecord::ConnectionAdapters.const_defined?(:Mysql2Adapter) && 
+                               ::ActiveRecord::Base.connection.is_a?(::ActiveRecord::ConnectionAdapters::Mysql2Adapter)
+                                 ::ActiveRecord::Base.connection.select_all("show indexes from active_record_bars").select { |index| 
+                                   index["Key_name"] == "PRIMARY" 
+                                 }.map { |index| 
+                                   index["Column_name"].to_sym 
+                                 }
+          elsif ::ActiveRecord::ConnectionAdapters.const_defined?(:SqliteAdapter) &&
+                ::ActiveRecord::Base.connection.is_a?(::ActiveRecord::ConnectionAdapters::SqliteAdapter)
+                  klass.connection.send(:table_structure, klass.table_name).select { |field|
+                    field['pk'].to_i == 1
+                  }.map { |field| field['name'].to_sym }
+          end
         end
 
         def destroy_all
