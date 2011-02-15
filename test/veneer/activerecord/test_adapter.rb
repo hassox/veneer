@@ -9,7 +9,7 @@ end
 require 'veneer/adapters/activerecord'
 
 
-Veneer::Test::ActiveRecordConnection.establish
+Veneer::Test::ActiveRecordHelper.establish_connection
 
 class CreateActiveRecordFoo < ActiveRecord::Migration
 
