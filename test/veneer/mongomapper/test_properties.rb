@@ -10,7 +10,7 @@ class MongoBar
   include MongoMapper::Document
 
   key :name,          String
-  key :string_field,  String
+  key :string_field,  String, :length => 255
   key :integer_field, Integer
   key :float_field,   Float
   key :date_field,    Date
@@ -42,5 +42,9 @@ class MongoMapperPropertiesTest < ::Test::Unit::TestCase
       :binary_field => StringIO
     }
     @primary_keys = [:_id]
+    @properties_with_length = {
+      :string_field => 255,
+      :integer_field => nil
+    }
   end
 end

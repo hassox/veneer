@@ -10,7 +10,7 @@ class DMBar
   
   property :id,                  Serial, :key => true
   property :another_id,          Integer, :key => true
-  property :string_field,        String
+  property :string_field,        String, :length => 255
   property :integer_field,       Integer
   property :text_field,          Text
   property :float_field,         Float
@@ -45,5 +45,9 @@ class DataMapperPropertiesTest < ::Test::Unit::TestCase
       :discriminator_field => Class
     }
     @primary_keys = [:id, :another_id]
+    @properties_with_length = {
+      :string_field => 255,
+      :integer_field => nil
+    }
   end
 end

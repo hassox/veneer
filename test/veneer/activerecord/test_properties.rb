@@ -39,5 +39,10 @@ class ActiveRecordPropertiesTest < ::Test::Unit::TestCase
       :boolean_field => TrueClass
     }
     @primary_keys = [:id, :name]
+    @properties_with_length = {
+      :string_field => 255,
+      :text_field => nil
+
+    }
   end
 end

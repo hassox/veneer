@@ -23,11 +23,9 @@ module Veneer
         assert result.size > 0
         property = result.first
         assert_kind_of Veneer::Base::Property, property
-        # assert_not_nil hash.name
         assert_kind_of Class, property.type
         assert_kind_of Symbol, property.name
         assert_not_nil property.primary?
-        # assert hash.has_key?(:length)
       end
       
       def test_primary_keys
@@ -44,6 +42,12 @@ module Veneer
         desired_primary_keys.each { |key| assert key.primary? }
       end
       
+      def test_length
+        @properties_with_length.each do |name, length|
+          assert_equal length, property_by_name(name).length, "Expected #{name}.length to be #{length}."
+        end
+      end
+
       def test_types_conversion
         @properties_mapping.each do |name, expected_normalized_type|
           assert_equal expected_normalized_type, property_by_name(name).type, "Expected #{name} to be #{expected_normalized_type}."
