@@ -47,9 +47,9 @@ module MongoMapper
             klass.keys.map do |property|
               property = property[1]
               name = property.name.to_sym
-              ::Veneer::Base::Property.new(
+              ::MongoMapper::Document::VeneerInterface::Property.new(
                 :name => name,
-                :type => ::MongoMapper::Document::VeneerInterface::ClassWrapper::Types.normalize(property.type),
+                :type => property.type,
                 :length => property.options[:length],
                 :primary => primary_keys.include?(name)
               )

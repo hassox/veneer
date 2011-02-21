@@ -7,6 +7,10 @@ module Veneer
       property :primary
       
       alias :primary? :primary
+
+      def initialize(properties)
+        super properties.merge(:type => normalize(properties[:type]))
+      end
     end
   end
 end

@@ -56,9 +56,9 @@ module ActiveRecord
           @properties ||= begin
             klass.columns.map do |property|
               name = property.name.to_sym
-              ::Veneer::Base::Property.new(
+             ::ActiveRecord::Base::VeneerInterface::Property.new(
                 :name => name,
-                :type => ::ActiveRecord::Base::VeneerInterface::ClassWrapper::Types.normalize(property.type),
+                :type => property.type,
                 :length => property.limit,
                 :primary => primary_keys.include?(name)
               )
