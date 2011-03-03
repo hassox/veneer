@@ -2,6 +2,8 @@ module ActiveRecord
   class Base
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
+        delegate :validators_on, :to => :klass 
+
         def self.except_classes
           @@except_classes ||= [
             "CGI::Session::ActiveRecordStore::Session",
