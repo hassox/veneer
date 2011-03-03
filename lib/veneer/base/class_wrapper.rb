@@ -170,6 +170,12 @@ module Veneer
         ::Kernel.raise Errors::NotImplemented
       end
 
+      # Should return an array of primary keys
+      # @api public
+      def primary_keys
+        ::Kernel.raise Errors::NotImplemented
+      end
+
       def find_first(opts)
         opts[:limit] = 1
         find_many(opts).first
