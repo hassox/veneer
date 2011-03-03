@@ -2,6 +2,8 @@ module MongoMapper
   module Document
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
+        delegate :validators_on, :to => :klass
+
         PRIMARY_KEYS = [:_id]
         
         def self.model_classes
@@ -14,9 +16,8 @@ module MongoMapper
 
         def collection_associations
           @collection_associations ||= begin
-            types = [:many]
             klass.associations.inject([]) do |ary, (name, assoc)|
-              if types.include?(assoc.type)
+              if assoc.is_a? ::MongoMapper::Plugins::Associations::ManyAssociation
                 ary << {
                   :name => name,
                   :class => assoc.class_name.constantize
@@ -29,9 +30,10 @@ module MongoMapper
 
         def member_associations
           @member_associations ||= begin
-            types = [:belongs_to, :one]
+            types = [::MongoMapper::Plugins::Associations::BelongsToAssociation,
+                     ::MongoMapper::Plugins::Associations::ManyAssociation]
             klass.associations.inject([]) do |ary, (name, assoc)|
-              if types.include?(assoc.type)
+              if types.include?(assoc.class)
                 ary << {
                   :name => name,
                   :class => assoc.class_name.constantize
