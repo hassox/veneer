@@ -49,5 +49,8 @@ class DataMapperPropertiesTest < ::Test::Unit::TestCase
       :string_field => 255,
       :integer_field => nil
     }
+    @properties_with_validations = {
+      :integer_field => [ActiveModel::Validations::PresenceValidator]
+    }
   end
 end

@@ -176,6 +176,12 @@ module Veneer
         ::Kernel.raise Errors::NotImplemented
       end
 
+      # Should return an array of ActiveModel::Validator class instances for given property name
+      # @api public
+      def validators_on(name)
+        ::Kernel.raise Errors::NotImplemented
+      end
+
       def find_first(opts)
         opts[:limit] = 1
         find_many(opts).first

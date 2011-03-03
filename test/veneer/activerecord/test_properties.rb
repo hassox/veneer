@@ -37,7 +37,9 @@ end
 
 CreateActiveRecordBar.up
 
-class ActiveRecordBar < ActiveRecord::Base; end
+class ActiveRecordBar < ActiveRecord::Base
+  validates_presence_of :integer_field
+end
 
 class ActiveRecordPropertiesTest < ::Test::Unit::TestCase
   include Veneer::Lint::Properties
@@ -63,6 +65,9 @@ class ActiveRecordPropertiesTest < ::Test::Unit::TestCase
       :string_field => 255,
       :text_field => nil
 
+    }
+    @properties_with_validations = {
+      :integer_field => [ActiveModel::Validations::PresenceValidator]
     }
   end
 end

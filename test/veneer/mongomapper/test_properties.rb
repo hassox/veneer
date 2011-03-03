@@ -20,6 +20,9 @@ class MongoBar
   key :time_field,    Time
   key :object_field,  Object
   key :binary_field,  Binary
+
+
+  validates_presence_of :integer_field
 end
 
 
@@ -45,6 +48,9 @@ class MongoMapperPropertiesTest < ::Test::Unit::TestCase
     @properties_with_length = {
       :string_field => 255,
       :integer_field => nil
+    }
+    @properties_with_validations = {
+      :integer_field => [ActiveModel::Validations::PresenceValidator]
     }
   end
 end

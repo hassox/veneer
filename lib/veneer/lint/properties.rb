@@ -54,6 +54,16 @@ module Veneer
         end
       end
 
+      def test_validations
+        @properties_with_validations.each do |name, validator_classes|
+          validators = Veneer(@klass).validators_on(name)
+          assert_equal validator_classes.size, validators.size
+          validators.zip(validator_classes).each do |validator, expected_class|
+            assert_kind_of expected_class, validator
+          end
+        end
+      end
+
       def property_by_name(name)
         Veneer(@klass).properties.find { |prop| prop.name == name } or raise "Couldn't find property #{name}."
       end
