@@ -41,6 +41,13 @@ module Veneer
         
         desired_primary_keys.each { |key| assert key.primary? }
       end
+
+      def test_constraints
+        Veneer(@klass).properties.each do |property|
+          constraints = property.contraints
+          assert_not_nil constraints
+        end
+      end
       
       def test_length
         @properties_with_length.each do |name, length|
