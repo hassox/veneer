@@ -95,7 +95,7 @@ module Veneer
       # @api public
       # @see Veneer::Base::ClassWrapper.all
       def first(opts={})
-        ::Kernel.Veneer(find_first(Hashie::Mash.new(opts)))
+        ::Kernel.Veneer(find_first(::Hashie::Mash.new(opts)))
       end
 
       # Provides an interface to query the objects
