@@ -12,7 +12,7 @@ module ActiveRecord
         end
 
         def self.model_classes
-          klasses = ::ActiveRecord::Base.__send__(:subclasses)
+          klasses = ::ActiveRecord::Base.descendants
           klasses.select do |klass|
             !klass.abstract_class? && !except_classes.include?(klass.name)
           end
