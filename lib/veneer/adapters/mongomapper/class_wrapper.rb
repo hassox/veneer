@@ -50,10 +50,17 @@ module MongoMapper
               property = property[1]
               name = property.name.to_sym
               ::MongoMapper::Document::VeneerInterface::Property.new(
-                :name => name,
-                :type => property.type,
-                :length => property.options[:length],
-                :primary => primary_keys.include?(name)
+                self,
+                {
+                  :name => name,
+                  :type => property.type,
+                  :constraints => {
+                    :length => property.options[:length],
+                    :nullable? => nil,
+                    :precision => nil,
+                  },
+                  :primary => primary_keys.include?(name),
+                }
               )
             end
           end

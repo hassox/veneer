@@ -44,14 +44,13 @@ module Veneer
 
       def test_constraints
         Veneer(@klass).properties.each do |property|
-          constraints = property.contraints
-          assert_not_nil constraints
+          assert_not_nil property[:constraints]
         end
       end
       
       def test_length
         @properties_with_length.each do |name, length|
-          assert_equal length, property_by_name(name).length, "Expected #{name}.length to be #{length}."
+          assert_equal length, property_by_name(name).constraints[:length], "Expected #{name}.length to be #{length}."
         end
       end
 

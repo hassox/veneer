@@ -12,10 +12,10 @@ module DataMapper
 
         def collection_associations
           @collection_associations ||= begin
-            result = klass.relationships.inject([]) do |ary, (name, rel)|
+            result = klass.relationships.inject([]) do |ary, rel|
               if rel.max > 1
                 ary << {
-                  :name  => name,
+                  :name  => rel.name,
                   :class => rel.child_model
                 }
               end
@@ -27,10 +27,10 @@ module DataMapper
 
         def member_associations
           @member_associations ||= begin
-            result = klass.relationships.inject([]) do |ary, (name, rel)|
+            result = klass.relationships.inject([]) do |ary, rel|
               if rel.max == 1
                 ary << {
-                  :name  => name,
+                  :name  => rel.name,
                   :class => rel.parent_model
                 }
               end
@@ -44,10 +44,18 @@ module DataMapper
           @properties ||= begin
             klass.properties.map do |property|
               ::DataMapper::Resource::VeneerInterface::Property.new(
-                :name => property.name,
-                :type => property,
-                :length => property.options[:length],
-                :primary => primary_keys.include?(property.name)
+                self,
+                {
+                  :name => property.name,
+                  :type => property,
+                  :constraints => {
+                    :length => property.options[:length],
+                    :nullable? => property.options[:allow_nil],
+                    :precision => property.options[:precision],
+                    :scale => property.options[:scale],
+                  },
+                  :primary => primary_keys.include?(property.name),
+                }
               )
             end
           end
@@ -86,6 +94,12 @@ module DataMapper
         def max(field, opts={})
           opts = ::Hashie::Mash.new(opts)
           klass.all(dm_conditions_from_opts(opts)).max(field)
+        end
+
+        # Delegate to validators_on if ActiveModel::Validations has been
+        # included in the model
+        def validators_on(name)
+          klass <=> ::ActiveModel::Validations ? klass.validators_on(name) : []
         end
 
         private

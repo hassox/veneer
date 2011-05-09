@@ -59,10 +59,18 @@ module ActiveRecord
             klass.columns.map do |property|
               name = property.name.to_sym
              ::ActiveRecord::Base::VeneerInterface::Property.new(
-                :name => name,
-                :type => property.type,
-                :length => property.limit,
-                :primary => primary_keys.include?(name)
+                self,
+                {
+                  :name => name,
+                  :type => property.type,
+                  :constraints => {
+                    :length => property.limit,
+                    :nullable? => property.null,
+                    :precision => property.precision,
+                    :scale => property.scale,
+                  },
+                  :primary => primary_keys.include?(name),
+                }
               )
             end
           end
