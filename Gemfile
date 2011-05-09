@@ -6,7 +6,7 @@ gemspec
 gem 'rake'
 gem 'shoulda'
 gem 'activerecord'
-gem 'mongo_mapper', :git => "https://github.com/jnunemaker/mongomapper.git"
+gem 'mongo_mapper'
 gem 'dm-core'
 gem 'dm-migrations'
 gem 'dm-validations'
