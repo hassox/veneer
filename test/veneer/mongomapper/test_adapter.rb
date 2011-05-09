@@ -24,7 +24,7 @@ class MongoFoo
   key :object_field,  Object
   key :binary_field,  Binary
 
-  validate_on_create :check_name
+  validate :check_name, :on => :create
 
   belongs_to :foo, :class_name => "MongoFoo"
   many :foos, :class_name => "MongoFoo"
