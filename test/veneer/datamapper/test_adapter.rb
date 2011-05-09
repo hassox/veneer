@@ -1,6 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', "..", "test_helper"))
 require 'dm-core'
-require 'dm-validations'
 require 'dm-migrations'
 require 'dm-aggregates'
 require 'veneer/adapters/datamapper'
@@ -9,6 +8,7 @@ DataMapper.setup(:default, 'sqlite3::memory:')
 
 class DMFoo
   include DataMapper::Resource
+  include ActiveModel::Validations
 
   property :id,                  Serial
   property :name,                String
@@ -27,17 +27,17 @@ class DMFoo
   property :object_field,        Object
   property :discriminator_field, Discriminator
   
-  validates_with_method :name, :method => :check_name
+  validate :check_name
 
-  has n,      :items,  :model => "DMFoo", :child_key => [:item_id]
-  belongs_to  :master, :model => "DMFoo", :child_key => [:item_id]
+  has n,      :items,  self, :child_key => [:item_id]
+  belongs_to  :master, self, :child_key => [:item_id]
+
+  before :save do
+    throw :halt unless valid?
+  end
 
   def check_name
-    if name == "invalid"
-      [false, "Invalid name"]
-    else
-      true
-    end
+    errors.add(:base, "Invalid name") if name == "invalid"
   end
 
   def v_with_m_test

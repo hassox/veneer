@@ -7,7 +7,10 @@ DataMapper.setup(:default, 'sqlite3::memory:')
 
 class DMBar
   include DataMapper::Resource
-  
+  include ActiveModel::Validations
+
+  validates_presence_of :integer_field
+
   property :id,                  Serial, :key => true
   property :another_id,          Integer, :key => true
   property :string_field,        String, :length => 255
