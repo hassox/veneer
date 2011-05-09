@@ -19,7 +19,7 @@ class DMFoo
   property :item_id,             Integer, :required => false
   property :text_field,          Text
   property :float_field,         Float
-  property :decimal_field,       Decimal
+  property :decimal_field,       Decimal, :scale => 0, :precision => 10
   property :datetime_field,      DateTime
   property :time_field,          Time
   property :date_field,          Date
