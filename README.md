@@ -7,16 +7,17 @@ Veneer aims to provide plugin, engine, and library authors with a consistant int
 It differs from ActiveModel in that it doesn't provide any validation support, serialization, callbacks, state machine or anything like that.  Veneer is intended to work _with_ ActiveModel to provide a data store independant interface to create reusable code.
 
 Veneer instead aims to provide a simple interface for
+
 * querying
 * creating
 * saving
 * deleting
 * basic lifecycle hooks
-** before validation
-** before save
-** after save
-** before destroy
-** after destroy
+  * before validation
+  * before save
+  * after save
+  * before destroy
+  * after destroy
 
 There is no interface for validations, since this interface is handled as part of ActiveModel
 
