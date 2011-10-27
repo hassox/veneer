@@ -95,7 +95,7 @@ module Veneer
       # @api public
       # @see Veneer::Base::ClassWrapper.all
       def first(opts={})
-        ::Kernel.Veneer(find_first(Hashie::Mash.new(opts)))
+        ::Kernel.Veneer(find_first(::Hashie::Mash.new(opts)))
       end
 
       # Provides an interface to query the objects
@@ -167,6 +167,18 @@ module Veneer
       # @api implementor
       # @see Veneer::Base::ClassWrapper.all
       def find_many(opts)
+        ::Kernel.raise Errors::NotImplemented
+      end
+
+      # Should return an array of primary keys
+      # @api public
+      def primary_keys
+        ::Kernel.raise Errors::NotImplemented
+      end
+
+      # Should return an array of ActiveModel::Validator class instances for given property name
+      # @api public
+      def validators_on(name)
         ::Kernel.raise Errors::NotImplemented
       end
 

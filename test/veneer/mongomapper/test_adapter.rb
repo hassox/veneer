@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "..", "..", "test_helper")
+require File.expand_path(File.join(File.dirname(__FILE__), '..', "..", "test_helper"))
 require 'mongo_mapper'
 
 require 'veneer/adapters/mongomapper'
@@ -15,8 +15,16 @@ class MongoFoo
   key :description,   String
   key :integer_field, Integer
   key :order_field1,  Integer
+  key :float_field,   Float
+  key :date_field,    Date
+  key :boolean_field, Boolean
+  key :hash_field,    Hash
+  key :set_field,     Set
+  key :time_field,    Time
+  key :object_field,  Object
+  key :binary_field,  Binary
 
-  validate_on_create :check_name
+  validate :check_name, :on => :create
 
   belongs_to :foo, :class_name => "MongoFoo"
   many :foos, :class_name => "MongoFoo"
@@ -30,8 +38,8 @@ class MongoFoo
   end
 end
 
-class MongoMapperVeneerTest < ::Test::Unit::TestCase
-  include Veneer::Lint
+class MongoMapperAdapterTest < ::Test::Unit::TestCase
+  include Veneer::Lint::Adapter
 
   def setup
     @klass              = ::MongoFoo
@@ -46,8 +54,20 @@ class MongoMapperVeneerTest < ::Test::Unit::TestCase
       MongoFoo.create(:name => "#{attr[:name]}#{i}", :title => "#{attr[:title]}#{i}", :description => "#{attr[:description]}#{i}", :integer_field => 1)
     end
   end
+  
+  def properties_mappings
+    {
+      :_id => String, #ObjectID
+      :name => String,
+      :integer_field => Integer,
+      :float_field => Float,
+      :date_field => Date,
+      :boolean_field => TrueClass, 
+      :hash_field => Hash,
+      :set_field => Set,
+      :time_field => Time,
+      :object_field => Object,
+      :binary_field => StringIO
+    }
+  end
 end
-
-
-
-

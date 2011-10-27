@@ -2,6 +2,8 @@ module ActiveRecord
   class Base
     module VeneerInterface
       class ClassWrapper < Veneer::Base::ClassWrapper
+        delegate :validators_on, :to => :klass 
+
         def self.except_classes
           @@except_classes ||= [
             "CGI::Session::ActiveRecordStore::Session",
@@ -10,7 +12,7 @@ module ActiveRecord
         end
 
         def self.model_classes
-          klasses = ::ActiveRecord::Base.__send__(:subclasses)
+          klasses = ::ActiveRecord::Base.descendants
           klasses.select do |klass|
             !klass.abstract_class? && !except_classes.include?(klass.name)
           end
@@ -50,6 +52,32 @@ module ActiveRecord
               ary
             end
           end
+        end
+
+        def properties
+          @properties ||= begin
+            klass.columns.map do |property|
+              name = property.name.to_sym
+             ::ActiveRecord::Base::VeneerInterface::Property.new(
+                self,
+                {
+                  :name => name,
+                  :type => property.type,
+                  :constraints => {
+                    :length => property.limit,
+                    :nullable? => property.null,
+                    :precision => property.precision,
+                    :scale => property.scale,
+                  },
+                  :primary => primary_keys.include?(name),
+                }
+              )
+            end
+          end
+        end
+
+        def primary_keys
+          @primary_keys ||= [klass.primary_key.to_sym]
         end
 
         def destroy_all

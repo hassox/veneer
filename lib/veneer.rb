@@ -24,11 +24,12 @@ module Veneer
   autoload :Errors,       'veneer/errors'
   autoload :Proxy,        'veneer/proxy'
   autoload :Conditional,  'veneer/base/conditional'
-  autoload :Lint,         'veneer/lint'
+
 
   module Base
     autoload :ClassWrapper,     'veneer/base/class_wrapper'
     autoload :InstanceWrapper,  'veneer/base/instance_wrapper'
+    autoload :Property,  'veneer/base/property'
   end
 
   def self.model_classes
